@@ -37,7 +37,7 @@ export default function Blogs() {
             Lates Poultry Blogs
           </div>
           <div className="grid grid-cols-3 gap-5">
-            {blogs.map((item, index) => (<div className="flex flex-col">
+            {blogs.map((item, index) => (<div key={index} className="flex flex-col">
               <div className="text relative mb-4">
 
                 <Image

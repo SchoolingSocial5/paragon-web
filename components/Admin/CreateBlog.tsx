@@ -41,7 +41,7 @@ const CreateBlog: React.FC = () => {
         if (existingItem) {
           BlogStore.setState({ blogForm: existingItem })
         } else {
-          await getBlog(`${url}/${id}`, setMessage)
+          await getBlog(`${url}/${id}`,)
         }
       }
     }

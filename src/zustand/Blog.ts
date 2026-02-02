@@ -69,7 +69,6 @@ interface BlogState {
   ) => Promise<void>
   getBlog: (
     url: string,
-    setMessage: (message: string, isError: boolean) => void
   ) => Promise<void>
   setProcessedResults: (data: FetchResponse) => void
   setLoading?: (loading: boolean) => void
@@ -224,10 +223,9 @@ const BlogStore = create<BlogState>((set) => ({
     }
   },
 
-  getBlog: async (url, setMessage) => {
+  getBlog: async (url) => {
     try {
       const response = await apiRequest<FetchResponse>(url, {
-        setMessage,
         setLoading: BlogStore.getState().setLoading,
       })
       const data = response?.data
