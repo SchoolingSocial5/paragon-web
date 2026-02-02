@@ -53,12 +53,7 @@ const StaffSheet: React.FC = () => {
         rules: { blank: true, minLength: 1, maxLength: 100 },
         field: 'Amount field',
       },
-      {
-        name: 'salary',
-        value: userForm.salary,
-        rules: { blank: true, maxLength: 100 },
-        field: 'Name field',
-      },
+
       {
         name: 'staffPositions',
         value: userForm.staffPositions,

@@ -54,14 +54,14 @@ const CreateBlog: React.FC = () => {
 
   const handleFileChange =
     (key: keyof typeof blogForm) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files ? e.target.files[0] : null
-      setForm(key, file)
-      if (key === 'picture' && file) {
-        const localUrl = URL.createObjectURL(file)
-        setPreview(localUrl)
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null
+        setForm(key, file)
+        if (key === 'picture' && file) {
+          const localUrl = URL.createObjectURL(file)
+          setPreview(localUrl)
+        }
       }
-    }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

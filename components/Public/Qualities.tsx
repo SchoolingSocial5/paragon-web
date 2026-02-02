@@ -37,7 +37,7 @@ export default function Qualities() {
               Quality Matters
             </div>
             <div className="text-[var(--secondaryTextColor)] text-center">
-              We maintain the highest standards of hygiene and freshness to
+              High standards of hygiene and freshness to
               ensure every product meets your expectations.
             </div>
           </div>

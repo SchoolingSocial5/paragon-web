@@ -38,6 +38,12 @@ const CreateCompany: React.FC = () => {
         field: 'Name field',
       },
       {
+        name: 'finalInstruction',
+        value: companyForm.finalInstruction,
+        rules: { blank: true, minLength: 3, },
+        field: 'Company Info',
+      },
+      {
         name: 'headquaters',
         value: companyForm.headquaters,
         rules: { blank: true, minLength: 3, maxLength: 1000 },
@@ -49,12 +55,6 @@ const CreateCompany: React.FC = () => {
         value: companyForm.phone,
         rules: { blank: true, minLength: 3, maxLength: 1000 },
         field: 'Phone Id',
-      },
-      {
-        name: 'finalInstruction',
-        value: companyForm.finalInstruction,
-        rules: { blank: false, minLength: 3, maxLength: 10000 },
-        field: 'Instruction Id',
       },
       {
         name: 'domain',
@@ -162,27 +162,7 @@ const CreateCompany: React.FC = () => {
               placeholder="Enter phone"
             />
           </div>
-          <div className="flex flex-col">
-            <label className="label" htmlFor="">
-              Allow New Signup
-            </label>
-            <div
-              onClick={() => setForm('allowSignUp', !companyForm.allowSignUp)}
-              className="custom_btn line neutral"
-            >
-              <div
-                className={`checkbox ${
-                  companyForm.allowSignUp ? 'active' : ''
-                }`}
-              >
-                {companyForm.allowSignUp && (
-                  <i className="bi bi-check text-white text-lg"></i>
-                )}
-              </div>
-              {`${companyForm.allowSignUp ? 'Yes' : 'No'} `}{' '}
-              {companyForm.allowSignUp}
-            </div>
-          </div>
+
           <div className="flex flex-col">
             <label className="label" htmlFor="">
               Headquaters

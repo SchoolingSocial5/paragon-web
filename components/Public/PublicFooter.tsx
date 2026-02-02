@@ -9,7 +9,7 @@ import BlogStore from '@/src/zustand/Blog'
 export default function PublicFooter() {
   const { companyForm } = CompanyStore()
   const { products } = ProductStore()
-  const { blogs } = BlogStore()
+  const { instaBlogs } = BlogStore()
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function PublicFooter() {
           alt="paragon"
         />
         <div className="customContainer">
-          <div className="grid md:grid-cols-4 w-full px-[10px]">
+          <div className="grid gap-3 md:grid-cols-4 w-full px-[10px]">
             <div className="flex flex-col mb-8 md:mb-0">
               <Image
                 style={{ height: 'auto' }}
@@ -35,7 +35,7 @@ export default function PublicFooter() {
                 height={0}
                 alt="Paragon Logo"
               />
-              <div className="text mb-3 text-[var(--secondaryTextColor)]">
+              <div className="text-sm mb-3 text-[var(--secondaryTextColor)]">
                 {companyForm.finalInstruction}
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function PublicFooter() {
                 Instagram Feed
               </div>
               <div className="grid grid-cols-3 md:gap-3 gap-3 w-full">
-                {blogs.slice(0, 3).map((item, i) => (
+                {instaBlogs.slice(0, 6).map((item, i) => (
                   <Image
                     key={i}
                     src={String(item.picture)}
@@ -134,7 +134,7 @@ export default function PublicFooter() {
               All Rights Reserved By
             </div>
             <Link className="text-[var(--customColor)]" href={'/'}>
-              Amonion Developers
+              Kenny Tech Studios
             </Link>
           </div>
         </div>

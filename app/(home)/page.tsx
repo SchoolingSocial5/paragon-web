@@ -48,13 +48,12 @@ export default function Home() {
       <div className="flex justify-center py-[90px] bg-[var(--backgroundColor)]">
         <div className="customContainer">
           <div className="flex flex-col items-center">
-            <div className="flex flex-col text-center max-w-[450px] mb-[70px]">
+            <div className="flex flex-col text-center max-w-[550px] mb-[70px]">
               <div className="text-[30px] text-[var(--primaryTextColor)] mb-2 font-bold">
                 Poultry Farm Services
               </div>
               <div className="text-[16px] text-[var(--secondaryTextColor)] ">
-                Conveniently customize proactive web services for leveraged
-                interfaces without Globally
+                Delivering sustainable poultry solutions and innovative farming practices to ensure the highest quality products for your family and business.
               </div>
             </div>
 
@@ -70,12 +69,11 @@ export default function Home() {
                     alt="real"
                   />
                   <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]">
-                    Alternative egg
+                    Premium Egg
                   </div>
                 </div>
                 <div className="text-[var(--secondaryTextColor)]">
-                  Continually aggregate frictionle enthusias generate user
-                  friendly vortals empowered without globally results.
+                  We provide farm-fresh, nutrient-dense eggs produced under the strictest hygiene standards and organic feeding protocols
                 </div>
               </div>
               <div className="flex flex-col shadow py-[15px] px-[25px]">
@@ -88,11 +86,10 @@ export default function Home() {
                     height={0}
                     alt="real"
                   />
-                  <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]"></div>
+                  <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]">Live Bird Supply</div>
                 </div>
                 <div className="text-[var(--secondaryTextColor)]">
-                  Continually aggregate frictionle enthusias generate user
-                  friendly vortals empowered without globally results.
+                  Health-certified broilers and layers raised in a stress-free environment, ensuring premium meat quality and high productivity.
                 </div>
               </div>
               <div className="flex flex-col shadow py-[15px] px-[25px]">
@@ -106,14 +103,14 @@ export default function Home() {
                     alt="real"
                   />
                   <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]">
-                    Breeder Management
+                    Elite Day-Old Chicks
                   </div>
                 </div>
                 <div className="text-[var(--secondaryTextColor)]">
-                  Continually aggregate frictionle enthusias generate user
-                  friendly vortals empowered without globally results.
+                  Sourcing and distributing high-performance breeds with superior genetics to give your poultry farm a head start.
                 </div>
               </div>
+
               <div className="flex flex-col shadow py-[15px] px-[25px]">
                 <div className="flex mb-6 items-center">
                   <Image
@@ -125,12 +122,11 @@ export default function Home() {
                     alt="real"
                   />
                   <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]">
-                    Poultry Climate
+                    Smart Farm Housing
                   </div>
                 </div>
                 <div className="text-[var(--secondaryTextColor)]">
-                  Continually aggregate frictionle enthusias generate user
-                  friendly vortals empowered without globally results.
+                  Automated climate-controlled environments that optimize temperature and ventilation for maximum bird comfort and growth.
                 </div>
               </div>
               <div className="flex flex-col shadow py-[15px] px-[25px]">
@@ -144,12 +140,11 @@ export default function Home() {
                     alt="real"
                   />
                   <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]">
-                    Residual Treatment
+                    Organic Waste Solutions
                   </div>
                 </div>
                 <div className="text-[var(--secondaryTextColor)]">
-                  Continually aggregate frictionle enthusias generate user
-                  friendly vortals empowered without globally results.
+                  Transforming poultry by-products into eco-friendly organic fertilizers to support sustainable crop production.
                 </div>
               </div>
               <div className="flex flex-col shadow py-[15px] px-[25px]">
@@ -163,12 +158,11 @@ export default function Home() {
                     alt="real"
                   />
                   <div className="text-[var(--primaryTextColor)] text-[20px] font-bold hover:text-[var(--customColor)]">
-                    Exhaust Air Treament
+                    Bio-Security & Hygiene
                   </div>
                 </div>
                 <div className="text-[var(--secondaryTextColor)]">
-                  Continually aggregate frictionle enthusias generate user
-                  friendly vortals empowered without globally results.
+                  Advanced sanitation and air filtration systems designed to prevent disease outbreaks and maintain a sterile farm ecosystem.
                 </div>
               </div>
             </div>

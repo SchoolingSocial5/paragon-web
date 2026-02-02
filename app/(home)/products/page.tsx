@@ -14,11 +14,11 @@ function ProductPage() {
       <div className="flex justify-center py-[90px] bg-[var(--backgroundColor)]">
         <div className="customContainer">
           <div className="flex flex-col items-center">
-            <div className="flex flex-col text-center max-w-[450px]">
+            <div className="flex flex-col text-center max-w-[550px] mb-5">
               <div className="text-[30px] text-[var(--primaryTextColor)] mb-2 font-bold">
                 Poultry Farm Products
               </div>
-              <div className="text-[16px] text-[var(--secondaryTextColor)] mb-18">
+              <div className="text-[16px] text-[var(--secondaryTextColor)]">
                 Delivering fresh, healthy, and ethically raised poultry products
                 straight from our farm to your table.
               </div>

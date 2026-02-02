@@ -16,12 +16,13 @@ import FaqStore from '@/src/zustand/faq'
 export default function PublicHeader() {
   const { toggleVNav } = NavStore()
   const { setMessage } = MessageStore()
-  const { getBanners, getGallery, getBlogs } = BlogStore()
+  const { getBanners, getGallery, getBlogs, getInstaBlogs, getAbout } = BlogStore()
   const { getCompany, companyForm } = CompanyStore()
   const { getProducts } = ProductStore()
   const { getUsers } = UserStore()
   const { getRatings } = RatingStore()
   const { getFaqs } = FaqStore()
+
   useEffect(() => {
     getBanners(`/blogs?category=Home-Banner`, setMessage)
     getCompany(`/company`, setMessage)
@@ -31,7 +32,9 @@ export default function PublicHeader() {
     )
     getUsers(`/users/?status=Staff&ordering=-staffRanking`, setMessage)
     getRatings(`/reviews/?ordering=-createdAt`, setMessage)
-    getFaqs(`/faqs/?ordering=-createdAt&page_size=100`, setMessage)
+    getFaqs(`/faqs/?ordering=createdAt&page_size=100`, setMessage)
+    getInstaBlogs(`/blogs/?ordering=-createdAt&page_size=6&category=Instagram`,)
+    getAbout(`/blogs/?ordering=-createdAt&page_size=1&category=About`,)
     getGallery(
       `/blogs?category=Gallery&ordering=-createdAt&page_size=20`,
       setMessage

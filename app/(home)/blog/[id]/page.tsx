@@ -27,7 +27,7 @@ export default function Blogs() {
 
               <button
                 type="submit"
-                className="bg-[var(--customTextColor)] cursor-pointer rounded px-4 py-2 hover:bg-[var(--customTextDarkColor)]"
+                className="bg-[var(--customTextColor)] cursor-pointer text-white rounded px-4 py-2 hover:bg-[var(--customTextDarkColor)]"
               >
                 Search
               </button>
@@ -53,7 +53,7 @@ export default function Blogs() {
 
               <div className="text">
                 <Link
-                  href={`/blog/${item._id}`}
+                  href={'/'}
                   className="z-10 text-black text-[20px] mb-3 block font-bold"
                 >
                   {item.title}
@@ -62,11 +62,12 @@ export default function Blogs() {
                   <div className="text mr-1  text-[var(#C1C1C4)] text-[12px]">
                     BY
                   </div>
-                  <span
+                  <Link
+                    href={`/blog/${item._id}`}
                     className="  text-black text-[12px] mr-4 font-bold"
                   >
                     {item.author}
-                  </span>
+                  </Link>
                   <div className="text-black flex">
                     <i className="bi bi-calendar mr-2"></i>
                     <div className="text-[var(#C1C1C4)]">{formatDate(String(item.createdAt))} </div>

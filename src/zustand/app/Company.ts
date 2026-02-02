@@ -90,19 +90,25 @@ const CompanyStore = create<CompanyState>((set) => ({
     }),
 
   updateItem: async (
-    url: string,
-    updatedItem: FormData | Record<string, unknown>,
-    setMessage: (message: string, isError: boolean) => void
+    url,
+    updatedItem,
+    setMessage
   ) => {
-    set({ loading: true })
-    const response = await apiRequest<FetchResponse>(url, {
-      method: 'PATCH',
-      body: updatedItem,
-      setMessage,
-    })
-    const data = response.data
-    if (data) {
-      set({ companyForm: data.company, loading: false })
+    try {
+      set({ loading: true })
+      const response = await apiRequest<FetchResponse>(url, {
+        method: 'PATCH',
+        body: updatedItem,
+        setMessage,
+      })
+      const data = response.data
+      if (data.company) {
+        set({ companyForm: data.company, loading: false })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      set({ loading: false })
     }
   },
 

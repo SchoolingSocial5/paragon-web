@@ -16,6 +16,7 @@ export interface Blog {
   subtitle: string
   category: string
   content: string
+  author: string
   picture: string | File
   createdAt: Date | null | number
   isChecked?: boolean
@@ -29,13 +30,16 @@ export const BlogEmpty = {
   category: '',
   content: '',
   picture: '',
+  author: '',
   createdAt: 0,
 }
 
 interface BlogState {
   count: number
   page_size: number
+  about: Blog
   blogs: Blog[]
+  instaBlogs: Blog[]
   banners: Blog[]
   gallery: Blog[]
   loading: boolean
@@ -56,6 +60,12 @@ interface BlogState {
   getGallery: (
     url: string,
     setMessage: (message: string, isError: boolean) => void
+  ) => Promise<void>
+  getInstaBlogs: (
+    url: string,
+  ) => Promise<void>
+  getAbout: (
+    url: string,
   ) => Promise<void>
   getBlog: (
     url: string,
@@ -96,12 +106,14 @@ const BlogStore = create<BlogState>((set) => ({
   count: 0,
   page_size: 0,
   blogs: [],
+  instaBlogs: [],
   banners: [],
   gallery: [],
   loading: false,
   selectedBlogs: [],
   searchedBlogs: [],
   isAllChecked: false,
+  about: BlogEmpty,
   blogForm: BlogEmpty,
   setForm: (key, value) =>
     set((state) => ({
@@ -150,6 +162,35 @@ const BlogStore = create<BlogState>((set) => ({
       console.log(error)
     }
   },
+
+  getAbout: async (url,) => {
+    try {
+      const response = await apiRequest<FetchResponse>(url, {
+        setLoading: BlogStore.getState().setLoading,
+      })
+      const data = response?.data
+      if (data) {
+        set({ about: data.results[0] })
+      }
+    } catch (error: unknown) {
+      console.log(error)
+    }
+  },
+
+  getInstaBlogs: async (url,) => {
+    try {
+      const response = await apiRequest<FetchResponse>(url, {
+        setLoading: BlogStore.getState().setLoading,
+      })
+      const data = response?.data
+      if (data) {
+        set({ instaBlogs: data.results })
+      }
+    } catch (error: unknown) {
+      console.log(error)
+    }
+  },
+
   getBanners: async (url, setMessage) => {
     try {
       const response = await apiRequest<FetchResponse>(url, {

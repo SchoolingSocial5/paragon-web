@@ -16,29 +16,16 @@ import {
   Settings,
   Wrench,
   HeartHandshake,
+  Lock,
 } from 'lucide-react'
 
 export default function VerticalNavigation() {
   const router = useRouter()
-  const [isSocial, toggleSocial] = useState(false)
-  const [isTransaction, toggleTransaction] = useState(false)
-  const [isMsgActive, toggleMessages] = useState(false)
-  const [isPagesActive, togglePages] = useState(false)
-  const [isService, toggleService] = useState(false)
-  const [isUser, toggleUser] = useState(false)
-  const [isSettingsActive, toggleSettings] = useState(false)
   const pathname = usePathname()
   const { toggleVNav, vNav, clearNav } = NavStore()
   const { user } = AuthStore()
 
   const offStates = () => {
-    toggleSettings(false)
-    toggleMessages(false)
-    togglePages(false)
-    toggleService(false)
-    toggleUser(false)
-    toggleTransaction(false)
-    toggleSocial(false)
     clearNav()
   }
 
@@ -54,9 +41,8 @@ export default function VerticalNavigation() {
   return (
     <div
       onClick={toggleVNav}
-      className={` ${
-        vNav ? 'left-0' : 'left-[-100%]'
-      } md:border-r-0 md:w-[270px] overflow-auto fixed  h-[100vh] top-0 md:z-30 z-50 w-full flex transition-all  md:left-0 justify-start md:sticky`}
+      className={` ${vNav ? 'left-0' : 'left-[-100%]'
+        } md:border-r-0 md:w-[270px] overflow-auto fixed  h-[100vh] top-0 md:z-30 z-50 w-full flex transition-all  md:left-0 justify-start md:sticky`}
     >
       <div
         onClick={(e) => {
@@ -102,44 +88,108 @@ export default function VerticalNavigation() {
 
         <div className="mt-4">
           <Link
-            className={`${
-              pathname === '/admin' ? 'text-[var(--customRedColor)]' : ''
-            } v_nav_items hover:text-[var(--customRedColor)] flex items-center`}
+            className={`${pathname === '/admin' ? 'text-[var(--customRedColor)]' : ''
+              } v_nav_items hover:text-[var(--customRedColor)] flex items-center`}
             href="/admin"
           >
             <Gauge className="mr-3 w-5 h-5" />
             Dashboard
           </Link>
           <Link
-            className={`${
-              pathname === '/admin/activities'
-                ? 'text-[var(--customRedColor)]'
-                : ''
-            } v_nav_items hover:text-[var(--customRedColor)] flex items-center`}
+            className={`${pathname === '/admin/activities'
+              ? 'text-[var(--customRedColor)]'
+              : ''
+              } v_nav_items hover:text-[var(--customRedColor)] flex items-center`}
             href="/admin/activities"
           >
             <ArrowLeftRight className="mr-3 w-5 h-5" />
             Sell Products
           </Link>
           <Link
-            className={`${
-              pathname === '/admin/activities/purchase'
-                ? 'text-[var(--customRedColor)]'
-                : ''
-            } v_nav_items hover:text-[var(--customRedColor)] flex items-center`}
+            className={`${pathname === '/admin/activities/purchase'
+              ? 'text-[var(--customRedColor)]'
+              : ''
+              } v_nav_items hover:text-[var(--customRedColor)] flex items-center`}
             href="/admin/activities/purchase"
           >
             <CreditCard className="mr-3 w-5 h-5" />
             Purchase Products
           </Link>
 
-          <div className={`v_nav_items ${isUser ? 'active trip' : ''}`}>
+          <div className={`v_nav_items active trip`}>
             <div
-              className={`${
-                pathname.includes('/admin/customers')
-                  ? 'text-[var(--customRedColor)]'
-                  : ''
-              }  hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
+              className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
+            >
+              <Link
+                className="flex flex-1 items-center"
+                href="/admin/transactions"
+              >
+                <CreditCard className="mr-3 w-5 h-5" />
+                Transactions
+              </Link>
+            </div>
+            <div className="nav_dropdown">
+              <Link
+                className="inner_nav_items"
+                href="/admin/transactions/status"
+              >
+                Transaction Status
+              </Link>
+              <Link
+                className="inner_nav_items"
+                href="/admin/transactions/purchases"
+              >
+                Purchase Transactions
+              </Link>
+              <Link
+                className="inner_nav_items"
+                href="/admin/operations/expenses"
+              >
+                Expenses
+              </Link>
+            </div>
+          </div>
+
+          <div className={`v_nav_items active trip`}>
+            <div
+              className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
+            >
+              <Link
+                className="flex flex-1 items-center"
+                href="/admin/operations"
+              >
+                <Wrench className="mr-3 w-5 h-5" />
+                Operation
+              </Link>
+            </div>
+            <div className="nav_dropdown">
+              <Link
+                className="inner_nav_items"
+                href="/admin/operations/consumptions"
+              >
+                Farm Production
+              </Link>
+              <Link
+                className="inner_nav_items"
+                href="/admin/operations/consumptions"
+              >
+                Consumption
+              </Link>
+              <Link
+                className="inner_nav_items"
+                href="/admin/operations/services"
+              >
+                Services
+              </Link>
+            </div>
+          </div>
+
+          <div className={`v_nav_items active two`}>
+            <div
+              className={`${pathname.includes('/admin/customers')
+                ? 'text-[var(--customRedColor)]'
+                : ''
+                }  hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
             >
               <Link
                 className="flex flex-1 items-center"
@@ -148,32 +198,69 @@ export default function VerticalNavigation() {
                 <Users className="mr-3 w-5 h-5" />
                 Customers
               </Link>
-              <i
-                onClick={() => toggleUser((e) => !e)}
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isUser ? 'active' : ''
-                }`}
-              ></i>
             </div>
             <div className="nav_dropdown">
+              <Link className="inner_nav_items" href="/admin/customers">
+                Customers Table
+              </Link>
               <Link className="inner_nav_items" href="/admin/customers/reviews">
                 Customer Reviews
               </Link>
+
+            </div>
+          </div>
+
+          <div className={`v_nav_items active two`}>
+            <div
+              className={`${pathname.includes('/admin/security')
+                ? 'text-[var(--customRedColor)]'
+                : ''
+                }  hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
+            >
+              <div
+                className="flex flex-1 items-center"
+              >
+                <Lock className="mr-3 w-5 h-5" />
+                Security
+              </div>
+            </div>
+            <div className="nav_dropdown">
               <Link
                 className="inner_nav_items"
-                href="/admin/customers/equipments"
+                href="/admin/security/equipments"
               >
                 Equipment Report
               </Link>
               <Link
                 className="inner_nav_items"
-                href="/admin/customers/visitors"
+                href="/admin/security"
               >
                 Visitors
               </Link>
             </div>
           </div>
-          <div className={`v_nav_items ${isSocial ? 'active two' : ''}`}>
+
+          <div className={`v_nav_items active two`}>
+            <div
+              className={`flex hover:text-[var(--customRedColor)] cursor-pointer items-center py-3 ${pathname.includes('products')
+                ? 'text-[var(--customRedColor)]'
+                : ''
+                }`}
+            >
+              <Boxes className="mr-3 w-5 h-5" />
+              Products
+            </div>
+            <div className="nav_dropdown">
+              <Link className="inner_nav_items" href="/admin/products">
+                Product Settings
+              </Link>
+              <Link className="inner_nav_items" href="/admin/products/stocks">
+                Stocks
+              </Link>
+            </div>
+          </div>
+
+          <div className={`v_nav_items active two`}>
             <div
               className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
             >
@@ -184,12 +271,6 @@ export default function VerticalNavigation() {
                 <HeartHandshake className="mr-3 w-5 h-5" />
                 Monthly Strategy
               </Link>
-              <i
-                onClick={() => toggleSocial((e) => !e)}
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isSocial ? 'active' : ''
-                }`}
-              ></i>
             </div>
             <div className="nav_dropdown">
               <Link className="inner_nav_items" href="/admin/socials">
@@ -200,20 +281,14 @@ export default function VerticalNavigation() {
               </Link>
             </div>
           </div>
-          <div className={`v_nav_items ${isPagesActive ? 'active trip' : ''}`}>
+          <div className={`v_nav_items active trip`}>
             <div
-              onClick={() => togglePages((e) => !e)}
-              className={`flex cursor-pointer ${
-                pathname.includes('pages') ? 'text-[var(--customRedColor)]' : ''
-              } hover:text-[var(--customRedColor)] items-center py-3`}
+              className={`flex cursor-pointer ${pathname.includes('pages') ? 'text-[var(--customRedColor)]' : ''
+                } hover:text-[var(--customRedColor)] items-center py-3`}
             >
               <FileArchive className="mr-3 w-5 h-5" />
               Pages
-              <i
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isPagesActive ? 'active' : ''
-                }`}
-              ></i>
+
             </div>
             <div className="nav_dropdown">
               <Link
@@ -238,123 +313,15 @@ export default function VerticalNavigation() {
             </div>
           </div>
 
-          <div className={`v_nav_items ${isService ? 'active two' : ''}`}>
+          <div className={`v_nav_items active`}>
             <div
-              className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
-            >
-              <Link
-                className="flex flex-1 items-center"
-                href="/admin/operations"
-              >
-                <Wrench className="mr-3 w-5 h-5" />
-                Production
-              </Link>
-              <i
-                onClick={() => toggleService((e) => !e)}
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isService ? 'active' : ''
+              className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3 ${pathname.includes('company')
+                ? 'text-[var(--customRedColor)]'
+                : ''
                 }`}
-              ></i>
-            </div>
-            <div className="nav_dropdown">
-              <Link
-                className="inner_nav_items"
-                href="/admin/operations/consumptions"
-              >
-                Consumption
-              </Link>
-              <Link
-                className="inner_nav_items"
-                href="/admin/operations/services"
-              >
-                Services
-              </Link>
-            </div>
-          </div>
-
-          <div className={`v_nav_items ${isTransaction ? 'active trip' : ''}`}>
-            <div
-              className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
-            >
-              <Link
-                className="flex flex-1 items-center"
-                href="/admin/transactions"
-              >
-                <CreditCard className="mr-3 w-5 h-5" />
-                Transactions
-              </Link>
-              <i
-                onClick={() => toggleTransaction((e) => !e)}
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isTransaction ? 'active' : ''
-                }`}
-              ></i>
-            </div>
-            <div className="nav_dropdown">
-              <Link
-                className="inner_nav_items"
-                href="/admin/transactions/status"
-              >
-                Transaction Status
-              </Link>
-              <Link
-                className="inner_nav_items"
-                href="/admin/transactions/purchases"
-              >
-                Purchase Transactions
-              </Link>
-              <Link
-                className="inner_nav_items"
-                href="/admin/operations/expenses"
-              >
-                Expenses
-              </Link>
-            </div>
-          </div>
-
-          <div className={`v_nav_items ${isMsgActive ? 'active two' : ''}`}>
-            <div
-              className={`flex hover:text-[var(--customRedColor)] cursor-pointer items-center py-3 ${
-                pathname.includes('products')
-                  ? 'text-[var(--customRedColor)]'
-                  : ''
-              }`}
-              onClick={() => toggleMessages((e) => !e)}
-            >
-              <Boxes className="mr-3 w-5 h-5" />
-              Products
-              <i
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isMsgActive ? 'active' : ''
-                }`}
-              ></i>
-            </div>
-            <div className="nav_dropdown">
-              <Link className="inner_nav_items" href="/admin/products">
-                Product Settings
-              </Link>
-              <Link className="inner_nav_items" href="/admin/products/stocks">
-                Stocks
-              </Link>
-            </div>
-          </div>
-
-          <div className={`v_nav_items ${isSettingsActive ? 'active' : ''}`}>
-            <div
-              onClick={() => toggleSettings((e) => !e)}
-              className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3 ${
-                pathname.includes('company')
-                  ? 'text-[var(--customRedColor)]'
-                  : ''
-              }`}
             >
               <Settings className="mr-3 w-5 h-5" />
               Company
-              <i
-                className={`bi bi-caret-down-fill ml-auto ${
-                  isSettingsActive ? 'active' : ''
-                }`}
-              ></i>
             </div>
             <div className="nav_dropdown">
               <Link className="inner_nav_items" href="/admin/company">

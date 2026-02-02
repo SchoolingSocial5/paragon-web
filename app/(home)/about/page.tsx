@@ -4,8 +4,11 @@ import Welcome from '@/components/Public/Welcome'
 import Testimonial from '@/components/Public/Testimonial'
 import { PageHeader } from '@/components/Public/PageBanner'
 import Qualities from '@/components/Public/Qualities'
+import BlogStore from '@/src/zustand/Blog'
 
-export default function Home() {
+export default function About() {
+  const { about } = BlogStore()
+
   return (
     <div>
       <PageHeader page="About" title="About Paragon Farms" />
@@ -23,7 +26,7 @@ export default function Home() {
                 History
               </div>
               <div className="text-[var(--primaryTextColor)] text-[55px] mb-8 font-bold">
-                3 Years Farm Traditions
+                3 {about.title}
               </div>
             </div>
             <div className="grid md:grid-cols-3 grid-cols-1 gap-7">
@@ -42,49 +45,33 @@ export default function Home() {
                       Since
                     </div>
                     <div className="text-[35px] sm:text-[55px] text-[var(--primaryTextColor)] font-bold">
-                      2022
+                      2025
                     </div>
                   </div>
-                  <div className="text text-[var(--secondaryTextColor)]">
-                    Continually productize compelling quality for packed with
-                    elated Productize compelling quality for packed with all
-                    elated themv Setting up to website and creating pages
-                    Continually productize compelling quality for packed with
-                    elated Productize compelling quality
-                  </div>
+
+                  <div
+                    className="text text-[var(--secondaryTextColor)]"
+                    dangerouslySetInnerHTML={{
+                      __html: about.content,
+                    }}
+                  />
                 </div>
               </div>
               <div className="flex flex-col text-center bg-[var(--backgroundColor)] py-6">
                 <div className="text-[35px] text-[var(--primaryTextColor)] font-bold mb-8">
                   Our Achievement
                 </div>
-                <div className="grid grid-cols-2 ">
-                  <div className="flex flex-col items-center mb-10">
-                    <Image
-                      src="/images/care.png"
-                      sizes="100vw"
-                      className="h-[50px] w-auto object-contain mb-3"
-                      width={0}
-                      height={0}
-                      alt="real"
-                    />
-                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-2">
-                      24/7
-                    </div>
-                    <div className="text-[20px] text-[var(--secondaryTextColor)] font-bold">
-                      Customer Support
-                    </div>
-                  </div>
+                <div className="grid grid-cols-2 gap-5">
                   <div className="flex flex-col items-center">
                     <Image
-                      src="/images/award.png"
+                      src="/images/eggs.png"
                       sizes="100vw"
                       className="h-[50px] w-auto object-contain mb-3"
                       width={0}
                       height={0}
                       alt="real"
                     />
-                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-2">
+                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-1">
                       1+
                     </div>
                     <div className="text-[20px] text-[var(--secondaryTextColor)] font-bold">
@@ -100,11 +87,11 @@ export default function Home() {
                       height={0}
                       alt="real"
                     />
-                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-2">
+                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-1">
                       28+
                     </div>
                     <div className="text-[20px] text-[var(--secondaryTextColor)] font-bold">
-                      Volunteers
+                      Customers
                     </div>
                   </div>
                   <div className="flex flex-col items-center">
@@ -116,11 +103,27 @@ export default function Home() {
                       height={0}
                       alt="real"
                     />
-                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-2">
+                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-1">
                       23k+
                     </div>
                     <div className="text-[20px] text-[var(--secondaryTextColor)] font-bold">
-                      Poultry
+                      Birds
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center mb-10">
+                    <Image
+                      src="/images/care.png"
+                      sizes="100vw"
+                      className="h-[50px] w-auto object-contain mb-3"
+                      width={0}
+                      height={0}
+                      alt="real"
+                    />
+                    <div className="text-[20px] text-[var(--primaryTextColor)] font-bold mb-1">
+                      24/7
+                    </div>
+                    <div className="text-[20px] text-[var(--secondaryTextColor)] font-bold">
+                      Support
                     </div>
                   </div>
                 </div>
@@ -131,8 +134,7 @@ export default function Home() {
       </div>
 
       {/* ////TESTIMONIAL SECTION//// */}
-      <div className="f ">
-        {' '}
+      <div className="f">
         <Testimonial />
       </div>
     </div>

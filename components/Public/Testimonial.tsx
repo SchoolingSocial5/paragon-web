@@ -11,7 +11,7 @@ function Testimonial() {
     <div className="flex justify-center py-[90px]">
       <div className="customContainer">
         <div className="flex flex-col items-center">
-          <div className="flex flex-col text-center max-w-[500px] mb-10">
+          <div className="flex flex-col text-center max-w-[550px] mb-10">
             <div className="text-[30px] text-[var(--primaryTextColor)] mb-2 font-bold">
               What Client Say Our Poultry Farm
             </div>
@@ -78,46 +78,7 @@ function Testimonial() {
               </SwiperSlide>
             ))}
           </Swiper>
-          {/* <div className="grid md:grid-cols-3 w-full gap-7">
-            {ratings.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-start shadow py-7 px-6 bg-[var(--backgroundColor)]"
-              >
-                <div className="flex mb-7">
-                  <Image
-                    src={String(item.picture)}
-                    sizes="100vw"
-                    className="h-auto w-[90px] object-contain mr-5"
-                    width={0}
-                    height={0}
-                    alt="real"
-                  />
-                  <div className="flex flex-col">
-                    <div className="text-[var(--primaryTextColor)] hover:text-[var(--customColor)] font-bold text-[20px]">
-                      {item.fullName}
-                    </div>
-                    <div className="text-[15px] text-[var(--secondaryTextColor)] font-semibold">
-                      Founder & CEO
-                    </div>
-                    <div className="flex text-[15px] font-bold">
-                      <i className="bi bi-star text-[var(--customColor)] mr-1"></i>
-                      <i className="bi bi-star text-[var(--customColor)]  mr-1"></i>
-                      <i className="bi bi-star text-[var(--customColor)]  mr-1"></i>
-                      <i className="bi bi-star text-[var(--customColor)]  mr-1"></i>
-                      <i className="bi bi-star text-[var(--customColor)]  mr-1"></i>
-                    </div>
-                  </div>
-                </div>
-                <i className="bi bi-quote mb-2 text-[var(--secondaryTextColor)]/50"></i>
-                <div className="text-[var(--secondaryTextColor)] mb-1">
-                  {item.review}
-                </div>
-                <i className="bi bi-quote"></i>
-              </div>
-            ))}
 
-          </div> */}
         </div>
       </div>
     </div>
