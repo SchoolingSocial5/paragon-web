@@ -69,8 +69,8 @@ export default function RootLayout({
   return (
     <>
       <PageLoader />
-      {/* <UserResponse />
-      <UserAlert /> */}
+      <UserResponse />
+      <UserAlert />
       <PublicHeader />
       <PublicNavbar />
       <div className="text-[var(--dark)] bg-white"> {children}</div>
