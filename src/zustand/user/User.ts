@@ -194,6 +194,7 @@ export const UserStore = create<UserState>((set) => ({
       })
       const data = response.data
       if (data) {
+        console.log(data)
         UserStore.getState().setProcessedResults(data.result)
       }
     } catch (error) {

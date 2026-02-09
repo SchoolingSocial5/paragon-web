@@ -1,5 +1,5 @@
 'use client'
-import CreateBuyProduct from '@/components/Admin/Products/CreateBuyProduct'
+import CreateBuyProduct from '@/components/Admin/Pages/CreateBuyProduct'
 
 const CreateBuyProductPage: React.FC = () => {
   return (

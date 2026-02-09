@@ -252,7 +252,7 @@ export default function VerticalNavigation() {
             </div>
             <div className="nav_dropdown">
               <Link className="inner_nav_items" href="/admin/products">
-                Product Settings
+                Create Product
               </Link>
               <Link className="inner_nav_items" href="/admin/products/stocks">
                 Stocks
@@ -260,19 +260,21 @@ export default function VerticalNavigation() {
             </div>
           </div>
 
-          <div className={`v_nav_items active two`}>
+          <div className={`v_nav_items active trip`}>
             <div
               className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
             >
-              <Link
+              <div
                 className="flex flex-1 items-center"
-                href="/admin/socials/strategies"
               >
                 <HeartHandshake className="mr-3 w-5 h-5" />
                 Monthly Strategy
-              </Link>
+              </div>
             </div>
             <div className="nav_dropdown">
+              <Link className="inner_nav_items" href="/admin/socials/strategies">
+                Monthly Strategy
+              </Link>
               <Link className="inner_nav_items" href="/admin/socials">
                 Social Reports
               </Link>
@@ -281,7 +283,7 @@ export default function VerticalNavigation() {
               </Link>
             </div>
           </div>
-          <div className={`v_nav_items active trip`}>
+          <div className={`v_nav_items active two`}>
             <div
               className={`flex cursor-pointer ${pathname.includes('pages') ? 'text-[var(--customRedColor)]' : ''
                 } hover:text-[var(--customRedColor)] items-center py-3`}
@@ -304,12 +306,12 @@ export default function VerticalNavigation() {
               >
                 FAQ
               </Link>
-              <Link
+              {/* <Link
                 className="inner_nav_items hover:text-[var(--customColor)]"
                 href="/admin/pages/terms"
               >
                 Terms
-              </Link>
+              </Link> */}
             </div>
           </div>
 

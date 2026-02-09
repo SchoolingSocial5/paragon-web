@@ -1,19 +1,25 @@
 'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
-import apiRequest, { ApiResponseInterface } from '@/lib/axios'
-import { getDeviceInfo } from '@/lib/helpers'
-import DownloadApp from '@/components/Public/DownloadApp'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { ValidationResult } from '@/lib/validateInputs'
-const ForgottenPassword: React.FC = () => {
+import apiRequest, { ApiResponseInterface } from '@/lib/axios'
+import { AuthStore } from '@/src/zustand/user/AuthStore'
+import Spinner from '@/components/LoadingAnimations/Spinner'
+
+export default function ForgottenPassword() {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<ValidationResult | null>(null)
   const [generalError, setGeneralError] = useState<string | null>(null)
+
   const [formData, setFormData] = useState({
     email: '',
   })
+
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -22,95 +28,99 @@ const ForgottenPassword: React.FC = () => {
     const { email } = formData
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      setGeneralError('Invalid email address')
+      setError({ emailMessage: "Please enter a valid email.", valid: false })
       return
     }
 
     setLoading(true)
-
     const form = new FormData()
-    form.append('email', formData.email.toLocaleLowerCase())
+    form.append('email', formData.email.trim())
+
     try {
-      const response = await apiRequest<ApiResponseInterface>(
-        '/users/forgotten-password',
-        {
-          method: 'POST',
-          body: form,
-        }
-      )
-      if (response?.data) {
-        localStorage.setItem('success', 'True')
-        router.replace('/auth/email-sent')
-      }
+      setLoading(true)
+      await apiRequest<ApiResponseInterface>('/users/forgot-password', {
+        method: 'POST',
+        body: form,
+      })
     } catch (error) {
+      if (error) {
+      }
+    } finally {
       setLoading(false)
-      console.log(error)
+      localStorage.setItem("auth_email", email)
+      setTimeout(() => {
+        router.replace('/pass-code')
+      }, 100)
     }
   }
-
   return (
     <>
-      {getDeviceInfo().os === 'Android' || getDeviceInfo().os === 'iOS' ? (
-        <DownloadApp />
-      ) : (
-        <div className="title-sm">Recorver your Account</div>
-      )}
-      <form onSubmit={handleSubmit} className="w-full">
-        <div className="w-full mb-3">
-          <div className="mb-1">Email</div>
-          <div className="form-input">
-            <i className="bi bi-envelope-at text-lg"></i>
-            <input
-              className="transparent-input"
-              name="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              placeholder="Enter your email"
-              type="email"
-            />
-          </div>
+      <div className="flex flex-col items-center mb-10">
+        <Image
+          style={{ height: 'auto', width: 50 }}
+          src="/Icon.png"
+          loading="lazy"
+          sizes="100vw"
+          className="my-auto mr-2"
+          width={0}
+          height={0}
+          alt="Paragon Farms Logo"
+        />
+        <h2 className="text-2xl uppercase mb-[-6px] font-semibold text-[var(--custom-text-color)]">
+          Paragon Farms
+        </h2>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="homeInputLabel">Email</label>
+          <input
+            type="text"
+            className="customHomeInput pl-2"
+            name="email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            placeholder="Enter email"
+          />
           {error?.emailMessage && (
-            <div className="text-red-500 text-[12px]">{error.emailMessage}</div>
+            <div className="text-red-500 text-sm">{error.emailMessage}</div>
           )}
         </div>
 
-        {generalError && <div className="sm-response">{generalError}</div>}
+        <div className="text-sm block">
+          {`Don't have an account? `}
+          <Link
+            href={`/sign-up`}
+            className="text-[var(--custom-text-color)] hover:underline"
+          >
+            Click Here.
+          </Link>
+        </div>
 
         {loading ? (
           <button
             type="button"
-            className=" custom-btn"
+            className="homeButton"
             style={{ width: '100%' }}
           >
-            <i className="bi bi-opencollective spin text-lg mr-3 animate-spin"></i>
-
-            <div>Processing...</div>
+            <Spinner size={30} />
           </button>
         ) : (
-          <button
-            type="submit"
-            className="custom-btn "
-            style={{ width: '100%' }}
-          >
-            Submit
+          <button type="submit" className="homeButton">
+            Submit Email
           </button>
         )}
-
-        <div className="mt-3">
-          Already have an account?
-          <Link
-            href="/sign-in"
-            className="text-[var(--custom-color)]"
-            style={{ display: 'inline-block', marginLeft: '3px' }}
-          >
-            sign in
-          </Link>
-        </div>
+        {generalError && (
+          <div className="text-red-500 text-sm">{generalError}</div>
+        )}
+        <Link
+          href={`/forgotten-password`}
+          className="mt-1 text-center text-sm text-[var(--custom-text-color)] block hover:underline"
+        >
+          Forgot Password?
+        </Link>
       </form>
     </>
   )
 }
-
-export default ForgottenPassword

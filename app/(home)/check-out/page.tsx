@@ -12,7 +12,7 @@ import Spinner from '@/components/LoadingAnimations/Spinner'
 import { useRouter } from 'next/navigation'
 
 function CheckOut() {
-  const { cartProducts, loading, totalAmount, setToCart, createTransaction } =
+  const { cartProducts, loading, totalAmount, clearCart, setToCart, createTransaction } =
     ProductStore()
   const { user } = AuthStore()
   const { setMessage } = MessageStore()
@@ -63,12 +63,16 @@ function CheckOut() {
     )
   }
 
+  const removeItems = () => {
+    clearCart()
+    router.push("/products")
+  }
+
   return (
     <div>
       {/*//// CheckOut Section 1 ////*/}
       <PageHeader page="Check Out" title="Check Out Cart Products" />
 
-      {/*//// Check-Out Section 2////*/}
       <div className="flex py-[100px] justify-center bg-[var(--backgroundColor)]">
         <div className="customContainer">
           <div className="flex flex-col items-center ">
@@ -76,9 +80,8 @@ function CheckOut() {
               {cartProducts.map((item, i) => (
                 <div
                   key={i}
-                  className={`${
-                    i % 2 === 0 ? 'bg-[var(--secondaryCustomColor)]' : ''
-                  } flex px-3 sm:px-7 py-3 sm:py-8 flex-col shadow-sm mb-6`}
+                  className={`${i % 2 === 0 ? 'bg-[var(--secondaryCustomColor)]' : ''
+                    } flex px-3 sm:px-7 py-3 sm:py-8 flex-col shadow-sm mb-6`}
                 >
                   <div className="flex items-center flex-wrap ">
                     <div className="flex md:flex-col items-center mb-3 md:mb-0">
@@ -141,34 +144,40 @@ function CheckOut() {
                 </div>
               </div>
             </div>
-            {user && cartProducts.length > 0 ? (
-              <div className="flex items-center">
+            {cartProducts.length > 0 && (
+              <div className="flex items-center flex-wrap gap-3">
                 {loading ? (
                   <Spinner size={30} />
                 ) : (
                   <>
-                    <div
-                      className="text-[20px] cursor-pointer mx-2 text-white bg-[var(--success)] rounded py-[10px] px-[30px]"
-                      onClick={() => setShowCart(true)}
+                    {user ? <>
+                      <div
+                        className="text-[20px] cursor-pointer text-white bg-[var(--customColor)] rounded py-[10px] px-[30px]"
+                        onClick={() => handleSubmit('Cash')}
+                      >
+                        Pay Cash
+                      </div>
+                      <div
+                        className="text-[20px] cursor-pointer text-white bg-[var(--success)] rounded py-[10px] px-[30px]"
+                        onClick={() => setShowCart(true)}
+                      >
+                        Transfer
+                      </div>
+                      <div
+                        className="text-[20px] cursor-pointer text-white bg-[var(--customColor)] rounded py-[10px] px-[30px]"
+                        onClick={removeItems}
+                      >
+                        Clear Cart
+                      </div>
+                    </> : <Link
+                      className="text-[20px] text-white bg-[var(--customColor)] rounded py-[10px] px-[30px]"
+                      href={'/sign-in'}
                     >
-                      Transfer
-                    </div>
-                    <div
-                      className="text-[20px] cursor-pointer mx-2 text-white bg-[var(--customColor)] rounded py-[10px] px-[30px]"
-                      onClick={() => handleSubmit('Cash')}
-                    >
-                      Pay Cash
-                    </div>
+                      Login To Purchase
+                    </Link>}
                   </>
                 )}
               </div>
-            ) : (
-              <Link
-                className="text-[20px] text-white bg-[var(--customColor)] rounded py-[10px] px-[30px]"
-                href={'/sign-in'}
-              >
-                Create Account
-              </Link>
             )}
           </div>
         </div>
@@ -183,13 +192,13 @@ function CheckOut() {
             onClick={(e) => {
               e.stopPropagation()
             }}
-            className="bg-white p-4 sharp w-full max-w-[600px]"
+            className="bg-white p-4 sharp w-full max-w-[600px] max-h-[100vh] overflow-auto"
           >
             <div className="flex justify-center mb-4">
               <Image
                 src="/Icon.png"
                 sizes="100vw"
-                className="h-[100px] w-auto object-contain"
+                className="h-[60px] w-auto object-contain"
                 width={0}
                 height={0}
                 alt="real"
@@ -197,14 +206,19 @@ function CheckOut() {
             </div>
             <div className="overflow-auto flex flex-col items-start max-h-[80vh]">
               <div className="flex items-center mb-3">
+                <span className="w-[150px]">Customer's Name:</span>{' '}
+                <span>{user?.fullName}</span>
+              </div>
+              <div className="mb-3 font-bold">Payment Details</div>
+              <div className="flex items-center mb-2">
                 <span className="w-[150px]">Bank Name:</span>{' '}
                 <span>{companyForm.bankName}</span>
               </div>
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-2">
                 <span className="w-[150px]">Account Name:</span>{' '}
                 <span>{companyForm.bankAccountName}</span>
               </div>
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-2">
                 <span className="w-[150px]">Account Number:</span>{' '}
                 <span>{companyForm.bankAccountNumber}</span>
               </div>
@@ -231,30 +245,38 @@ function CheckOut() {
                 <Spinner size={30} />
               </div>
             ) : (
-              <div className="bg-[var(--secondaryCustomColor)] p-3 flex items-center flex-wrap">
-                <div className="mr-auto text-[var(--customRedColor)]">
+              <div className="bg-[var(--secondaryCustomColor)] p-3 flex items-center flex-col">
+                <div className="text-[var(--customRedColor)] text-center font-bold mb-2 text-lg">
                   ₦{formatMoney(totalAmount)}
                 </div>
-                <label
-                  htmlFor="picture"
-                  className="px-2 cursor-pointer py-1 bg-[var(--success)] text-white"
-                >
-                  <input
-                    className="input-file"
-                    type="file"
-                    name="picture"
-                    id="picture"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                  <i className="bi bi-cloud-arrow-up text-2xl mr-2"></i>
-                  Receipt
-                </label>
-                <div
-                  onClick={() => handleSubmit('Transfer')}
-                  className="px-2 ml-3 cursor-pointer py-[8px] bg-[var(--success)] text-white"
-                >
-                  Submit Payment
+                <div className="flex justify-center gap-3 items-center">
+                  <label
+                    htmlFor="picture"
+                    className="px-2 cursor-pointer py-1 bg-[var(--success)] text-white"
+                  >
+                    <input
+                      className="input-file"
+                      type="file"
+                      name="picture"
+                      id="picture"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                    <i className="bi bi-cloud-arrow-up text-2xl mr-2"></i>
+                    Receipt
+                  </label>
+                  <div
+                    onClick={() => handleSubmit('Transfer')}
+                    className="px-2 ml-3 cursor-pointer py-[8px] bg-[var(--success)] text-white"
+                  >
+                    Submit Payment
+                  </div>
+                  <div
+                    onClick={() => setShowCart(false)}
+                    className="px-2 ml-3 cursor-pointer py-[8px] bg-[var(--customRedColor)] text-white"
+                  >
+                    Cancel Payment
+                  </div>
                 </div>
               </div>
             )}

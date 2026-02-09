@@ -42,6 +42,7 @@ interface NotificationTemplateState {
   selectedItems: NotificationTemplate[]
   searchResult: NotificationTemplate[]
   searchedResults: NotificationTemplate[]
+  isNoteForm: boolean
   isAllChecked: boolean
   formData: NotificationTemplate
   setForm: (
@@ -62,7 +63,7 @@ interface NotificationTemplateState {
   setLoading?: (loading: boolean) => void
   massDelete: (
     url: string,
-    selectedItems: NotificationTemplate[],
+    selectedItems: Record<string, unknown>,
     setMessage: (message: string, isError: boolean) => void
   ) => Promise<void>
   deleteItem: (
@@ -95,6 +96,7 @@ const NotificationTemplateStore = create<NotificationTemplateState>((set) => ({
   page_size: 20,
   results: [],
   loading: false,
+  isNoteForm: false,
   error: null,
   selectedItems: [],
   searchResult: [],
@@ -210,9 +212,9 @@ const NotificationTemplateStore = create<NotificationTemplateState>((set) => ({
   }, 1000),
 
   massDelete: async (
-    url: string,
-    selectedItems: NotificationTemplate[],
-    setMessage: (message: string, isError: boolean) => void
+    url,
+    selectedItems,
+    setMessage
   ) => {
     try {
       set({ loading: true })

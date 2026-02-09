@@ -16,7 +16,7 @@
   --border: #d8d8d8;
   --scroll-bar: #636363;
   --success: #0cc042;
-    --warning: #b98c04;
+  --warning: #b98c04;
 
   --white-gray: #ebedf4;
   --custom-color: #da3986;
@@ -29,9 +29,9 @@
   --black: #000;
   --dark: #232323;
 
-    --backgroundColor: #FFFFFF;
- --primaryTextColor: #181818;
- --secondaryTextColor: #716C80;
+  --backgroundColor: #FFFFFF;
+  --primaryTextColor: #181818;
+  --secondaryTextColor: #716C80;
   --customColor: #FE964D;
   --customDarkColor: #f57c25;
   --customRedColor: #F35329;
@@ -57,12 +57,11 @@
   --border-background: #111111;
   --text-main-color: #bababa;
   --text-title-color: #e2e2e2;
-    --success: #0fce48;
-    --warning: #eab308;
+  --success: #0fce48;
+  --warning: #eab308;
 }
 
-@layer utilities {
-}
+@layer utilities {}
 
 .dark input:-webkit-autofill,
 .dark input:-webkit-autofill:hover,
@@ -72,17 +71,20 @@
   -webkit-text-fill-color: var(--text-main-color);
 }
 
-html, body {
-  overscroll-behavior-y: contain; /* Stops pull-to-refresh */
+html,
+body {
+  overscroll-behavior-y: contain;
+  /* Stops pull-to-refresh */
 }
 
 .react-calendar__tile--active {
-    background: var(--custom)!important;
-    color: white;
+  background: var(--custom) !important;
+  color: white;
 }
+
 .react-calendar__tile:hover {
-    background: var(--primary)!important;
-    color: var(--text-primary);
+  background: var(--primary) !important;
+  color: var(--text-primary);
 }
 
 .common-icon {
@@ -116,8 +118,10 @@ html, body {
 /* Put this in a global CSS file (e.g. globals.css) */
 .react-calendar {
   background-color: var(--secondary) !important;
-  border-radius: 0.5rem; /* optional */
-  padding: 0.5rem; /* optional */
+  border-radius: 0.5rem;
+  /* optional */
+  padding: 0.5rem;
+  /* optional */
   border: none !important;
 }
 
@@ -157,11 +161,13 @@ ol {
 .dashboardHeaderCircles {
   @apply w-10 h-10 bg-[var(--cardBackground)] rounded-full flex justify-center items-center mr-3 last:mr-0 cursor-pointer
 }
+
 /* --------------DASHBOARD STYLES-------------- */
 
 .contactInput {
   @apply flex flex-col mb-4 w-full
 }
+
 .custom-container {
   @apply max-w-[1300px] w-full px-2 sm:px-3;
 }
@@ -170,63 +176,65 @@ ol {
   @apply max-w-[1300px] w-full px-2 sm:px-3;
 }
 
-.customHomeInput{
+.customHomeInput {
   @apply mt-1 w-full text-gray-600 rounded-md border border-gray-300 pr-2 py-2 focus:border-[var(--customTextColor)] focus:outline-none focus:ring-1 focus:ring-[var(--customTextColor)]
 }
 
-.homeButton{
-  @apply w-full text-center cursor-pointer transition-all duration-500 rounded-md bg-[var(--customColor)] py-2 text-white hover:bg-[var(--customDarkColor)]
+.homeButton {
+  @apply w-full flex justify-center text-center cursor-pointer transition-all duration-500 rounded-md bg-[var(--customColor)] py-2 text-white hover:bg-[var(--customDarkColor)]
 }
 
-.homeInputLabel{
+.homeInputLabel {
   @apply block text-sm font-medium text-[var(--secondary-text-color)]
 }
 
-.navLinks{
+.navLinks {
   @apply py-3 px-5 block lg:text-lg hover:bg-[var(--customDarkColor)]
 }
 
-.footerPill{
+.footerPill {
   @apply mb-1 mr-1 cursor-pointer hover:bg-transparent transition duration-300 bg-[var(--customLightColor)] py-1 px-2 rounded-[5px]
 }
 
-.propertyPill{
+.propertyPill {
   @apply flex items-center text-white bg-green-600 hover:bg-green-600/50 cursor-pointer rounded-[5px] py-[2px] px-1
 }
 
-.selectList{
+.selectList {
   @apply border border-gray-300 p-2 rounded outline-0 py-3 px-2 cursor-pointer
 }
 
-.selectOption{
+.selectOption {
   @apply border-b border-b-gray-300
 }
 
-.testimony .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
-    top: 250px;
+.testimony .swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
+  top: 250px;
 }
 
 .testimony .swiper-backface-hidden .swiper-slide {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
-  .swiper-pagination-bullet {
-          background-color: #FFFFFF;
-          width: 10px;
-          height: 10px;
-          border-radius: 9999px;
-          opacity: 1;
-          transition: all 0.3s ease;
-        }
+.swiper-pagination-bullet {
+  background-color: #FFFFFF;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
 
 
-        .swiper-pagination-bullet-active {
-          background-color: #FE964D; /* Tailwind orange */
-          width: 16px;
-          height: 16px;
-          box-shadow:#FFFFFF; /* subtle glow */
-        }
+.swiper-pagination-bullet-active {
+  background-color: #FE964D;
+  /* Tailwind orange */
+  width: 16px;
+  height: 16px;
+  box-shadow: #FFFFFF;
+  /* subtle glow */
+}
 
 .swiper-pagination-bullets.swiper-pagination-horizontal {
-    top: 550px;
+  top: 550px;
 }

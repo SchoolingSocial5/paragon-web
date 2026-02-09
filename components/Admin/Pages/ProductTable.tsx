@@ -9,7 +9,7 @@ import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
 import { Edit, Package, Trash } from 'lucide-react'
 import LinkedPagination from '@/components/Admin/LinkedPagination'
 import ProductStore, { Product } from '@/src/zustand/Product'
-import StockingForm from '@/components/Admin/Products/StockingForm'
+import StockingForm from '@/components/Admin/Pages/StockingForm'
 import StockingStore from '@/src/zustand/Stocking'
 
 const ProductTable: React.FC = () => {
@@ -46,18 +46,16 @@ const ProductTable: React.FC = () => {
 
   useEffect(() => {
     if (products.length === 0) {
-      const params = `?page_size=${page_size}&page=${
-        page ? page : 1
-      }&ordering=${sort}`
+      const params = `?page_size=${page_size}&page=${page ? page : 1
+        }&ordering=${sort}`
       getProducts(`${url}${params}`, setMessage)
     }
   }, [page])
 
   const deleteProduct = async (id: string, index: number) => {
     toggleActive(index)
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
+    const params = `?page_size=${page_size}&page=${page ? page : 1
+      }&ordering=${sort}`
     await deleteItem(`${url}/${id}/${params}`, setMessage, setLoading)
   }
 
@@ -132,11 +130,10 @@ const ProductTable: React.FC = () => {
 
           {searchedProducts.length > 0 && (
             <div
-              className={`dropdownList ${
-                searchedProducts.length > 0
+              className={`dropdownList ${searchedProducts.length > 0
                   ? 'overflow-auto'
                   : 'overflow-hidden h-0'
-              }`}
+                }`}
             >
               {searchedProducts.map((item, index) => (
                 <div key={index} className="input_drop_list">
@@ -258,9 +255,8 @@ const ProductTable: React.FC = () => {
           <div className="grid mr-auto grid-cols-4 gap-2 w-[160px]">
             <div onClick={toggleAllSelected} className="tableActions">
               <i
-                className={`bi bi-check2-all ${
-                  isAllChecked ? 'text-[var(--custom)]' : ''
-                }`}
+                className={`bi bi-check2-all ${isAllChecked ? 'text-[var(--custom)]' : ''
+                  }`}
               ></i>
             </div>
             <div onClick={DeleteItems} className="tableActions">

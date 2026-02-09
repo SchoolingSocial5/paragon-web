@@ -4,6 +4,18 @@ import apiRequest from '@/lib/axios'
 import TransactionStore, { Transaction } from './Transaction'
 import NotificationStore, { Notification } from './notification/Notification'
 
+const getSavedCart = () => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('paragon_cart');
+    try {
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return []; // Safety if JSON is corrupted
+    }
+  }
+  return [];
+};
+
 export interface NotificationResult {
   notification: Notification
   unread: number
@@ -167,6 +179,7 @@ interface ProductState {
     setMessage: (message: string, isError: boolean) => void,
     redirect?: () => void
   ) => Promise<void>
+  clearCart: () => void
   toggleChecked: (index: number) => void
   toggleActive: (index: number) => void
   toggleAllSelected: () => void
@@ -177,11 +190,14 @@ interface ProductState {
 const ProductStore = create<ProductState>((set) => ({
   count: 0,
   page_size: 0,
-  totalAmount: 0,
+  totalAmount: getSavedCart().reduce(
+    (sum: any, item: any) => sum + item.cartUnits * (item.price || 0),
+    0
+  ),
   cart: CartEmpty,
   products: [],
   buyingProducts: [],
-  cartProducts: [],
+  cartProducts: getSavedCart(),
   buyingCartProducts: [],
   productStockings: [],
   loading: false,
@@ -263,61 +279,76 @@ const ProductStore = create<ProductState>((set) => ({
 
   setToCart: (p, isAdded) => {
     set((prev) => {
-      const existing = prev.cartProducts.find((item) => item._id === p._id)
+      const existing = prev.cartProducts.find((item) => item._id === p._id);
 
       const updateProductsCartUnits = (id: string, newUnits: number) =>
         prev.products.map((prod) =>
           prod._id === id ? { ...prod, cartUnits: newUnits } : prod
-        )
+        );
 
-      let updatedCart: typeof prev.cartProducts = []
+      let nextState = prev;
 
       if (existing) {
-        const newUnits = isAdded
-          ? existing.cartUnits + 1
-          : existing.cartUnits - 1
+        const newUnits = isAdded ? existing.cartUnits + 1 : existing.cartUnits - 1;
 
         if (!isAdded && newUnits <= 0) {
-          updatedCart = prev.cartProducts.filter((item) => item._id !== p._id)
-          return {
+          const updatedCart = prev.cartProducts.filter((item) => item._id !== p._id);
+          nextState = {
+            ...prev,
             cartProducts: updatedCart,
             products: updateProductsCartUnits(p._id, 0),
-            totalAmount: updatedCart.reduce(
-              (sum, item) => sum + item.cartUnits * (item.price || 0),
-              0
-            ),
-          }
+            totalAmount: updatedCart.reduce((sum, item) => sum + item.cartUnits * (item.price || 0), 0),
+          };
+        } else {
+          const updatedCart = prev.cartProducts.map((item) =>
+            item._id === p._id ? { ...item, cartUnits: newUnits } : item
+          );
+          nextState = {
+            ...prev,
+            cartProducts: updatedCart,
+            products: updateProductsCartUnits(p._id, newUnits),
+            totalAmount: updatedCart.reduce((sum, item) => sum + item.cartUnits * (item.price || 0), 0),
+          };
         }
-
-        updatedCart = prev.cartProducts.map((item) =>
-          item._id === p._id ? { ...item, cartUnits: newUnits } : item
-        )
-
-        return {
-          cartProducts: updatedCart,
-          products: updateProductsCartUnits(p._id, newUnits),
-          totalAmount: updatedCart.reduce(
-            (sum, item) => sum + item.cartUnits * (item.price || 0),
-            0
-          ),
-        }
-      }
-
-      if (isAdded) {
-        updatedCart = [...prev.cartProducts, { ...p, cartUnits: 1 }]
-
-        return {
+      } else if (isAdded) {
+        const updatedCart = [...prev.cartProducts, { ...p, cartUnits: 1 }];
+        nextState = {
+          ...prev,
           cartProducts: updatedCart,
           products: updateProductsCartUnits(p._id, 1),
-          totalAmount: updatedCart.reduce(
-            (sum, item) => sum + item.cartUnits * (item.price || 0),
-            0
-          ),
-        }
+          totalAmount: updatedCart.reduce((sum, item) => sum + item.cartUnits * (item.price || 0), 0),
+        };
       }
 
-      return prev
-    })
+      // Persist to LocalStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('paragon_cart', JSON.stringify(nextState.cartProducts));
+      }
+
+      return nextState;
+    });
+  },
+
+  clearCart: () => {
+    set((prev) => {
+      const resetProducts = prev.products.map((prod) => ({
+        ...prod,
+        cartUnits: 0,
+      }));
+
+      const clearedState = {
+        ...prev,
+        cartProducts: [],
+        products: resetProducts,
+        totalAmount: 0,
+      };
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('paragon_cart');
+      }
+
+      return clearedState;
+    });
   },
 
   setToBuyCart: (p, isAdded) => {

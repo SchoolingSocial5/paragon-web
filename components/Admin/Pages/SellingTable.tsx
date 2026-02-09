@@ -9,7 +9,7 @@ import LinkedPagination from '@/components/Admin/LinkedPagination'
 import ProductStore from '@/src/zustand/Product'
 import { User, UserEmpty, UserStore } from '@/src/zustand/user/User'
 import { AuthStore } from '@/src/zustand/user/AuthStore'
-import CustomerForm from './PopUps/CustomerForm'
+import CustomerForm from '../PopUps/CustomerForm'
 
 const SellingTable: React.FC = () => {
   const {
@@ -67,9 +67,8 @@ const SellingTable: React.FC = () => {
 
   useEffect(() => {
     if (cartProducts.length === 0) {
-      const params = `?page_size=${page_size}&page=${
-        page ? page : 1
-      }&ordering=${sort}&isBuyable=${false}`
+      const params = `?page_size=${page_size}&page=${page ? page : 1
+        }&ordering=${sort}&isBuyable=${false}`
       getProducts(`${url}${params}`, setMessage)
     }
   }, [page, pathname])
@@ -169,11 +168,10 @@ const SellingTable: React.FC = () => {
 
           {searchedUsers.length > 0 && (
             <div
-              className={`dropdownList ${
-                searchedUsers.length > 0
+              className={`dropdownList ${searchedUsers.length > 0
                   ? 'overflow-auto'
                   : 'overflow-hidden h-0'
-              }`}
+                }`}
             >
               {searchedUsers.map((item, index) => (
                 <div
@@ -442,11 +440,10 @@ const SellingTable: React.FC = () => {
                   onClick={() =>
                     setDelivery(delivery === 'Instant' ? 'Ordered' : 'Instant')
                   }
-                  className={`${
-                    delivery === 'Instant'
+                  className={`${delivery === 'Instant'
                       ? 'bg-[var(--success)]'
                       : 'bg-[var(--customRedColor)]'
-                  } px-2 cursor-pointer py-1 text-white`}
+                    } px-2 cursor-pointer py-1 text-white`}
                 >
                   {delivery}
                 </div>

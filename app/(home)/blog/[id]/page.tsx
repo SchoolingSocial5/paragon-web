@@ -39,7 +39,7 @@ export default function Blogs() {
             alt="real"
           />
 
-          <div className="text">
+          <div className="text mb-5">
             <div
               className="z-10 text-black text-[20px] mb-3 block font-bold"
             >
@@ -60,6 +60,13 @@ export default function Blogs() {
               </div>
             </div>
           </div>
+
+          <div
+            className="leading-[25px] text-[var(--secondaryTextColor)] mb-4"
+            dangerouslySetInnerHTML={{
+              __html: blogForm.content,
+            }}
+          />
         </div>
       </div>
     </div>

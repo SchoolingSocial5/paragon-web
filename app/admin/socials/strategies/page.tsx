@@ -30,13 +30,13 @@ const Strategies: React.FC = () => {
   const { page, username } = useParams()
   const [fromDate, setFromDate] = useState<Date | null>(null)
   const [toDate, setToDate] = useState<Date | null>(null)
+  const params = `?page_size=${page_size}&page=${page ? page : 1}&ordering=${sort}`
 
   useEffect(() => {
-    const url = `/strategies${
-      fromDate && toDate
-        ? `?dateFrom=${fromDate.toISOString()}&dateTo=${toDate.toISOString()}&`
-        : '?'
-    }page_size=${page_size}&page=${page ? page : 1}&ordering=${sort}`
+    const url = `/strategies${fromDate && toDate
+      ? `?dateFrom=${fromDate.toISOString()}&dateTo=${toDate.toISOString()}&`
+      : '?'
+      }page_size=${page_size}&page=${page ? page : 1}&ordering=${sort}`
 
     getStrategies(`${url}`, setMessage)
   }, [page, pathname, username, fromDate, toDate])
@@ -49,9 +49,9 @@ const Strategies: React.FC = () => {
   const startDelete = (id: string) => {
     setAlert(
       'Warning',
-      'Are you sure you want to delete this social record?',
+      'Are you sure you want to delete this strategy record?',
       true,
-      () => deleteItem(`/marketing/${id}`, setMessage)
+      () => deleteItem(`/strategies/${id}${params}`, setMessage)
     )
   }
 
@@ -117,7 +117,7 @@ const Strategies: React.FC = () => {
                       </div>
                     )}
                   </td>
-                  <td>{item.staffName}</td>
+                  <td>Management</td>
                   <td>
                     {item.strategies.map((s, i) => (
                       <div key={i}>{s}</div>
@@ -154,9 +154,8 @@ const Strategies: React.FC = () => {
           <div className="grid mr-auto grid-cols-4 gap-2 w-[160px]">
             <div onClick={toggleAllSelected} className="tableActions">
               <i
-                className={`bi bi-check2-all ${
-                  isAllChecked ? 'text-[var(--custom)]' : ''
-                }`}
+                className={`bi bi-check2-all ${isAllChecked ? 'text-[var(--custom)]' : ''
+                  }`}
               ></i>
             </div>
             <div

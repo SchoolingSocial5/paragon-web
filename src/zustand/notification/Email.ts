@@ -45,6 +45,7 @@ interface EmailsState {
   searchResult: Email[]
   searchedResults: Email[]
   isAllChecked: boolean
+  isEmailForm: boolean
   emailForm: Email
   setForm: (key: keyof Email, value: Email[keyof Email]) => void
   resetForm: () => void
@@ -59,7 +60,8 @@ interface EmailsState {
   sendUsersEmail: (
     url: string,
     updatedItem: FormData | Record<string, unknown>,
-    setMessage: (message: string, isError: boolean) => void
+    setMessage: (message: string, isError: boolean) => void,
+    redirect?: () => void
   ) => Promise<void>
   getEmail: (
     url: string,
@@ -69,7 +71,7 @@ interface EmailsState {
   setLoading?: (loading: boolean) => void
   massDelete: (
     url: string,
-    selectedItems: Email[],
+    selectedItems: Record<string, unknown>,
     setMessage: (message: string, isError: boolean) => void
   ) => Promise<void>
   deleteItem: (
@@ -102,6 +104,7 @@ const EmailStore = create<EmailsState>((set) => ({
   results: [],
   socialEmails: [],
   loading: false,
+  isEmailForm: false,
   error: null,
   selectedItems: [],
   searchResult: [],
@@ -144,16 +147,13 @@ const EmailStore = create<EmailsState>((set) => ({
 
   sendUsersEmail: async (url, updatedItem, setMessage) => {
     try {
-      const response = await apiRequest<FetchEmailResponse>(url, {
+      await apiRequest<FetchEmailResponse>(url, {
         method: 'PATCH',
         body: updatedItem,
         setMessage,
         setLoading: EmailStore.getState().setLoading,
       })
-      const data = response?.data
-      if (data) {
-        set({ socialEmails: data.results })
-      }
+
     } catch (error: unknown) {
       console.error('Failed to fetch staff:', error)
     }
@@ -251,18 +251,26 @@ const EmailStore = create<EmailsState>((set) => ({
   }, 1000),
 
   massDelete: async (
-    url: string,
-    selectedItems: Email[],
-    setMessage: (message: string, isError: boolean) => void
+    url,
+    selectedItems,
+    setMessage
   ) => {
-    set({
-      loading: true,
-    })
-    await apiRequest<FetchEmailResponse>(url, {
-      method: 'PATCH',
-      body: selectedItems,
-      setMessage,
-    })
+    try {
+      set({ loading: true, })
+      const response = await apiRequest<FetchEmailResponse>(url, {
+        method: 'PATCH',
+        body: selectedItems,
+        setMessage,
+      })
+      const data = response?.data
+      if (data && data.results) {
+        EmailStore.getState().setProcessedResults(data)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      set({ loading: false, })
+    }
   },
 
   deleteItem: async (

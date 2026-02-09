@@ -4,45 +4,44 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useParams, usePathname } from 'next/navigation'
 import { MessageStore } from '@/src/zustand/notification/Message'
-import EmailStore from '@/src/zustand/notification/Email'
+import NotificationTemplateStore, { NotificationTemplate } from '@/src/zustand/notification/NotificationTemplate'
+import LinkedPagination from '../LinkedPagination'
+import NotificationForm from '../PopUps/NotificationForm'
 
-const Emails: React.FC = () => {
-  const url = '/emails/'
+const NotificationTemplates: React.FC = () => {
+  const url = '/emails/templates/'
   const { page } = useParams()
   const [page_size] = useState(20)
   const [sort] = useState('-createdAt')
   const { setMessage } = MessageStore()
   const pathname = usePathname()
-
   const {
+    results,
+    isAllChecked,
+    selectedItems,
+    loading,
+    count, isNoteForm,
     getItems,
     massDelete,
     deleteItem,
     toggleAllSelected,
     toggleChecked,
-    results,
-    isAllChecked,
-    selectedItems,
-    loading,
     toggleActive,
     reshuffleResults,
-  } = EmailStore()
+  } = NotificationTemplateStore()
+  const params = `?page_size=${page_size}&page=${page ? page : 1
+    }&ordering=${sort}`
+
   useEffect(() => {
     reshuffleResults()
   }, [pathname])
 
   useEffect(() => {
     reshuffleResults()
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
     getItems(`${url}${params}`, setMessage)
   }, [results.length, page])
 
   const deleteEmail = async (id: string) => {
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
     await deleteItem(`${url}${id}/${params}`, setMessage)
   }
 
@@ -51,7 +50,13 @@ const Emails: React.FC = () => {
       setMessage('Please select at least one email to delete', false)
       return
     }
-    await massDelete(`${url}mass-delete/`, selectedItems, setMessage)
+    const ids = selectedItems.map((item) => item._id)
+    await massDelete(`${url}mass-delete/${params}`, { ids }, setMessage)
+  }
+
+  const selectItem = async (e: NotificationTemplate) => {
+    NotificationTemplateStore.setState({ formData: e, isNoteForm: true })
+
   }
   return (
     <>
@@ -61,7 +66,6 @@ const Emails: React.FC = () => {
             <thead>
               <tr className="bg-[var(--primary)] p-2">
                 <th>S/N</th>
-                <th>Picture</th>
                 <th>Name</th>
                 <th>Title</th>
                 <th>Greetings</th>
@@ -101,34 +105,22 @@ const Emails: React.FC = () => {
                         </span>
                         <Link
                           className="card_list_item"
-                          href={`/admin/company/emails/edit-email/${item._id}`}
+                          href={`/admin/company/notification-templates/edit/${item._id}`}
                         >
-                          Edit Email
+                          Edit
                         </Link>
                         <div
                           className="card_list_item"
                           onClick={() => deleteEmail(item._id)}
                         >
-                          Delete Email
+                          Delete
                         </div>
                       </div>
                     )}
                   </td>
                   <td>
-                    {item.picture ? (
-                      <Image
-                        alt={`email of ${item.picture}`}
-                        src={String(item.picture)}
-                        width={0}
-                        sizes="100vw"
-                        height={0}
-                        style={{ width: '50px', height: 'auto' }}
-                      />
-                    ) : (
-                      <span>No picture available</span>
-                    )}
+                    <span onClick={() => selectItem(item)} className="cursor-pointer">{item.name}</span>
                   </td>
-                  <td>{item.name}</td>
                   <td>{item.title}</td>
                   <td>{item.greetings}</td>
                 </tr>
@@ -137,7 +129,7 @@ const Emails: React.FC = () => {
           </table>
         ) : (
           <div className="relative flex justify-center">
-            <div className="not_found_text">No Email Found</div>
+            <div className="not_found_text">No Notifications Found</div>
             <Image
               className="max-w-[300px]"
               alt={`no record`}
@@ -160,13 +152,12 @@ const Emails: React.FC = () => {
           <div className="grid mr-auto grid-cols-4 gap-2 w-[160px]">
             <div onClick={toggleAllSelected} className="tableActions">
               <i
-                className={`bi bi-check2-all ${
-                  isAllChecked ? 'text-[var(--custom)]' : ''
-                }`}
+                className={`bi bi-check2-all ${isAllChecked ? 'text-[var(--custom)]' : ''
+                  }`}
               ></i>
             </div>
             <Link
-              href={`/admin/company/emails/create-email`}
+              href={`/admin/company/notification-templates/create`}
               className="tableActions"
             >
               <i className="bi bi-plus-circle"></i>
@@ -183,8 +174,17 @@ const Emails: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="card_body sharp">
+        <LinkedPagination
+          url="/admin/company/notification-templates"
+          count={count}
+          page_size={20}
+        />
+      </div>
+
+      {isNoteForm && <NotificationForm />}
     </>
   )
 }
 
-export default Emails
+export default NotificationTemplates

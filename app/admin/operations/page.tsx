@@ -11,7 +11,7 @@ import {
   formatTimeTo12Hour,
 } from '@/lib/helpers'
 import StatDuration from '@/components/Admin/StatDuration'
-import StockingForm from '@/components/Admin/Products/StockingForm'
+import StockingForm from '@/components/Admin/Pages/StockingForm'
 
 const ProductStocking: React.FC = () => {
   const [page_size] = useState(20)
@@ -69,17 +69,15 @@ const ProductStocking: React.FC = () => {
   }, [pathname])
 
   useEffect(() => {
-    const params = `&page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
+    const params = `&page_size=${page_size}&page=${page ? page : 1
+      }&ordering=${sort}`
     getProductStockings(`${url}${params}`, setMessage)
   }, [page, toDate, fromDate])
 
   const deleteProductStock = async (id: string, index: number) => {
     toggleActive(index)
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
+    const params = `?page_size=${page_size}&page=${page ? page : 1
+      }&ordering=${sort}`
     await deleteItem(`/products/stocking/${id}/${params}`, setMessage)
   }
 
@@ -152,20 +150,18 @@ const ProductStocking: React.FC = () => {
                   <td>{item.name}</td>
                   <td>{item.staffName}</td>
                   <td
-                    className={`${
-                      item.isProfit
+                    className={`${item.isProfit
                         ? 'text-[var(--success)]'
                         : 'text-[var(--customRedColor)]'
-                    }`}
+                      }`}
                   >
                     {item.units}
                   </td>
                   <td
-                    className={`${
-                      item.isProfit
+                    className={`${item.isProfit
                         ? 'text-[var(--success)]'
                         : 'text-[var(--customRedColor)]'
-                    }`}
+                      }`}
                   >
                     ₦{formatMoney(item.amount)}
                   </td>

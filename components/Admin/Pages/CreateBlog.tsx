@@ -6,8 +6,8 @@ import { useState, useEffect } from 'react'
 import { MessageStore } from '@/src/zustand/notification/Message'
 import { useParams, useRouter } from 'next/navigation'
 import PictureDisplay from '@/components/PictureDisplay'
-import QuillEditor from './QuillEditor'
 import BlogStore from '@/src/zustand/Blog'
+import QuillEditor from '../QuillEditor'
 
 const CreateBlog: React.FC = () => {
   const {

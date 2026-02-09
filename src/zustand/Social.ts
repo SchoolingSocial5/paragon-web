@@ -174,9 +174,9 @@ const SocialStore = create<SocialState>((set) => ({
   },
 
   deleteItem: async (
-    url: string,
-    setMessage: (message: string, isError: boolean) => void,
-    setLoading?: (loading: boolean) => void
+    url,
+    setMessage,
+    setLoading
   ) => {
     const response = await apiRequest<FetchResponse>(url, {
       method: 'DELETE',

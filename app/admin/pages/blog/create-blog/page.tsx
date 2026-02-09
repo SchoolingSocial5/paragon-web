@@ -1,6 +1,6 @@
 'use client'
 
-import CreateBlog from '@/components/Admin/CreateBlog'
+import CreateBlog from "@/components/Admin/Pages/CreateBlog"
 
 const CreateBlogPage: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 'use client'
 
-import NotificationTemplates from '@/components/Admin/NotificationTemplates'
+import NotificationTemplates from '@/components/Admin/Pages/NotificationTemplates'
 
 const NotificationTemplatePage: React.FC = () => {
   return (

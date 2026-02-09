@@ -23,7 +23,7 @@ export default function AuthLayout({
       </video>
       <div className="custom-container">
         <div className="flex w-full justify-center">
-          <div className="relative flex w-full max-w-4xl rounded-xl bg-white shadow-lg md:flex-row">
+          <div className="relative flex w-full min-h-[400px] max-w-4xl rounded-xl bg-white shadow-lg md:flex-row">
             {/* Left Panel - Quote Section */}
             <div className="hidden w-1/2 flex-col justify-center bg-cover bg-center p-8  md:flex">
               <blockquote className="text-xl italic">

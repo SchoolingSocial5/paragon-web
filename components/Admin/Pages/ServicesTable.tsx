@@ -11,7 +11,7 @@ import {
 } from '@/lib/helpers'
 import StatDuration from '@/components/Admin/StatDuration'
 import ServiceStore, { Service } from '@/src/zustand/Service'
-import ServiceForm from './PopUps/ServiceForm'
+import ServiceForm from '../PopUps/ServiceForm'
 
 const ServicesTable: React.FC = () => {
   const [page_size] = useState(20)
@@ -51,9 +51,8 @@ const ServicesTable: React.FC = () => {
 
   useEffect(() => {
     if (fromDate && toDate) {
-      const params = `&page_size=${page_size}&page=${
-        page ? page : 1
-      }&ordering=${sort}`
+      const params = `&page_size=${page_size}&page=${page ? page : 1
+        }&ordering=${sort}`
       getServices(`${url}${params}`, setMessage)
     }
   }, [page, pathname, username, toDate, fromDate])
@@ -80,16 +79,14 @@ const ServicesTable: React.FC = () => {
   const startDelivery = (id: string, status: boolean) => {
     if (status) {
       updateService(
-        `/services/${id}?dateFrom=${fromDate}&dateTo=${toDate}&page_size=${page_size}&page=${
-          page ? page : 1
+        `/services/${id}?dateFrom=${fromDate}&dateTo=${toDate}&page_size=${page_size}&page=${page ? page : 1
         }&ordering=${sort}`,
         { startedAt: new Date() },
         setMessage
       )
     } else {
       updateService(
-        `/services/${id}?dateFrom=${fromDate}&dateTo=${toDate}&page_size=${page_size}&page=${
-          page ? page : 1
+        `/services/${id}?dateFrom=${fromDate}&dateTo=${toDate}&page_size=${page_size}&page=${page ? page : 1
         }&ordering=${sort}`,
         { endedAt: new Date() },
         setMessage
@@ -240,9 +237,8 @@ const ServicesTable: React.FC = () => {
           <div className="grid mr-auto grid-cols-4 gap-2 w-[160px]">
             <div onClick={toggleAllSelected} className="tableActions">
               <i
-                className={`bi bi-check2-all ${
-                  isAllChecked ? 'text-[var(--custom)]' : ''
-                }`}
+                className={`bi bi-check2-all ${isAllChecked ? 'text-[var(--custom)]' : ''
+                  }`}
               ></i>
             </div>
             <div
