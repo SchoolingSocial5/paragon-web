@@ -150,7 +150,7 @@ export default function VerticalNavigation() {
             </div>
           </div>
 
-          <div className={`v_nav_items active trip`}>
+          <div className={`v_nav_items active`}>
             <div
               className={`hover:text-[var(--customRedColor)] flex cursor-pointer items-center py-3`}
             >
@@ -165,21 +165,47 @@ export default function VerticalNavigation() {
             <div className="nav_dropdown">
               <Link
                 className="inner_nav_items"
-                href="/admin/operations/consumptions"
+                href="/admin/operations/productions"
               >
-                Farm Production
+                Daily Production
               </Link>
               <Link
                 className="inner_nav_items"
                 href="/admin/operations/consumptions"
               >
-                Consumption
+                Daily Consumption
+              </Link>
+              <Link
+                className="inner_nav_items"
+                href="/admin/operations/consumptions"
+              >
+                Daily Mortality
               </Link>
               <Link
                 className="inner_nav_items"
                 href="/admin/operations/services"
               >
-                Services
+                Daily Services
+              </Link>
+            </div>
+          </div>
+
+          <div className={`v_nav_items active two`}>
+            <div
+              className={`flex hover:text-[var(--customRedColor)] cursor-pointer items-center py-3 ${pathname.includes('products')
+                ? 'text-[var(--customRedColor)]'
+                : ''
+                }`}
+            >
+              <Boxes className="mr-3 w-5 h-5" />
+              Products
+            </div>
+            <div className="nav_dropdown">
+              <Link className="inner_nav_items" href="/admin/products">
+                Create Product
+              </Link>
+              <Link className="inner_nav_items" href="/admin/products/stocks">
+                Stocks
               </Link>
             </div>
           </div>
@@ -236,26 +262,6 @@ export default function VerticalNavigation() {
                 href="/admin/security"
               >
                 Visitors
-              </Link>
-            </div>
-          </div>
-
-          <div className={`v_nav_items active two`}>
-            <div
-              className={`flex hover:text-[var(--customRedColor)] cursor-pointer items-center py-3 ${pathname.includes('products')
-                ? 'text-[var(--customRedColor)]'
-                : ''
-                }`}
-            >
-              <Boxes className="mr-3 w-5 h-5" />
-              Products
-            </div>
-            <div className="nav_dropdown">
-              <Link className="inner_nav_items" href="/admin/products">
-                Create Product
-              </Link>
-              <Link className="inner_nav_items" href="/admin/products/stocks">
-                Stocks
               </Link>
             </div>
           </div>

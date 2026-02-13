@@ -634,6 +634,7 @@ const ProductStore = create<ProductState>((set) => ({
       setMessage,
       setLoading: ProductStore.getState().setLoading,
     })
+    console.log(response)
     if (response?.data) {
       ProductStore.getState().setProcessedResults(response.data)
     }

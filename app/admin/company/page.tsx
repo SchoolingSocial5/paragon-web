@@ -2,19 +2,29 @@
 import Link from 'next/link'
 import { appendForm } from '@/lib/helpers'
 import { validateInputs } from '@/lib/validation'
-import { MessageStore } from '@/src/zustand/notification/Message'
+import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
 import CompanyStore from '@/src/zustand/app/Company'
 
 const CreateCompany: React.FC = () => {
   const url = '/company/'
-  const { companyForm, setForm, loading, updateItem } = CompanyStore()
+  const { companyForm, loading, setForm, resetAll, updateItem } = CompanyStore()
   const { setMessage } = MessageStore()
+  const { setAlert } = AlartStore()
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
     setForm(name as keyof typeof companyForm, value)
+  }
+
+  const startReset = () => {
+    setAlert(
+      'Warning',
+      'Are you sure you want to clear and reset every activities?',
+      true,
+      () => resetAll("/company/reset", { reset: "" }, setMessage)
+    )
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -231,7 +241,7 @@ const CreateCompany: React.FC = () => {
           ></textarea>
         </div>
 
-        <div className="table-action flex flex-wrap">
+        <div className="table-action flex flex-wrap gap-3">
           {loading ? (
             <button className="custom_btn">
               <i className="bi bi-opencollective loading"></i>
@@ -241,6 +251,9 @@ const CreateCompany: React.FC = () => {
             <>
               <button className="custom_btn" onClick={handleSubmit}>
                 Submit
+              </button>
+              <button className="custom_btn" onClick={startReset}>
+                Reset App
               </button>
               <Link href="/admin/company/staffs" className="custom_btn ml-auto">
                 Staff Table

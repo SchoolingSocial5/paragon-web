@@ -5,20 +5,20 @@ import { appendForm } from '@/lib/helpers'
 import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
 import { validateInputs } from '@/lib/validation'
 import { AuthStore } from '@/src/zustand/user/AuthStore'
-import ConsumptionStore from '@/src/zustand/Consumption'
-import ProductStore, { Product } from '@/src/zustand/Product'
+import ProductStore from '@/src/zustand/Product'
+import OperationStore, { Operation } from '@/src/zustand/Operation'
 
-const ConsumptionForm: React.FC = () => {
+const OperationOverlay: React.FC = () => {
   const {
-    consumptionForm,
+    operationForm,
     loading,
-    updateConsumption,
-    postConsumption,
+    updateOperation,
+    createOperation,
     setForm,
     resetForm,
-    setShowConsumptionForm,
+    setShowOperationForm,
     reshuffleResults,
-  } = ConsumptionStore()
+  } = OperationStore()
   const { buyingProducts } = ProductStore()
   const { setMessage } = MessageStore()
   const pathname = usePathname()
@@ -31,15 +31,10 @@ const ConsumptionForm: React.FC = () => {
     reshuffleResults()
   }, [pathname])
 
-  const selectFeed = (feed: Product) => {
-    ConsumptionStore.setState((prev) => {
+  const selectFeed = (feed: Operation) => {
+    OperationStore.setState((prev) => {
       return {
-        consumptionForm: {
-          ...prev.consumptionForm,
-          feed: feed.name,
-          feedId: feed._id,
-          consumptionUnit: feed.consumptionUnit,
-        },
+        operationForm: feed,
       }
     })
     toggleFeed(false)
@@ -49,7 +44,7 @@ const ConsumptionForm: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    setForm(name as keyof typeof consumptionForm, value)
+    setForm(name as keyof typeof operationForm, value)
   }
 
   const handleSubmit = async () => {
@@ -66,57 +61,51 @@ const ConsumptionForm: React.FC = () => {
         field: 'Staff Name field',
       },
       {
-        name: 'feedId',
-        value: consumptionForm.feedId,
+        name: 'livestock',
+        value: operationForm.livestock,
         rules: { blank: false },
-        field: 'Feed field',
+        field: 'Live Stock field',
       },
       {
-        name: 'birds',
-        value: consumptionForm.birds,
+        name: 'livestockAge',
+        value: operationForm.livestockAge,
         rules: { blank: true },
-        field: 'Birds field',
+        field: 'Livestock Age',
       },
       {
-        name: 'consumption',
-        value: consumptionForm.consumption,
+        name: 'operation',
+        value: operationForm.operation,
         rules: { blank: false },
-        field: 'Consumption field',
+        field: 'Livestock Operation field',
       },
       {
-        name: 'birdAge',
-        value: consumptionForm.birdAge,
+        name: 'livestockNumber',
+        value: operationForm.livestockNumber,
         rules: { blank: false },
-        field: 'Bird age field',
+        field: 'Number field',
       },
       {
-        name: 'birdClass',
-        value: consumptionForm.birdClass,
+        name: 'medication',
+        value: operationForm.medication,
         rules: { blank: false },
-        field: 'Bird class field',
+        field: 'Medication field',
       },
       {
-        name: 'feed',
-        value: consumptionForm.feed,
+        name: 'quantity',
+        value: operationForm.quantity,
         rules: { blank: false },
-        field: 'Feed field',
-      },
-      {
-        name: 'consumptionUnit',
-        value: consumptionForm.consumptionUnit,
-        rules: { blank: false },
-        field: 'Consumption unit field',
+        field: 'Quantity field',
       },
       {
         name: 'weight',
-        value: consumptionForm.weight,
+        value: operationForm.weight,
         rules: { blank: false },
         field: 'Weight field',
       },
 
       {
         name: 'remark',
-        value: consumptionForm.remark,
+        value: operationForm.remark,
         rules: { blank: false, maxLength: 10 },
         field: 'Remark field',
       },
@@ -149,22 +138,22 @@ const ConsumptionForm: React.FC = () => {
       'Are you sure you want to submit this consumption record',
       true,
       () =>
-        consumptionForm._id
-          ? updateConsumption(
-            `/consumptions/${consumptionForm._id}/?ordering=-createdAt`,
+        operationForm._id
+          ? updateOperation(
+            `/consumptions/${operationForm._id}/?ordering=-createdAt`,
             data,
             setMessage,
             () => {
-              setShowConsumptionForm(false)
+              setShowOperationForm(false)
               resetForm()
             }
           )
-          : postConsumption(
+          : createOperation(
             `${url}?ordering=-createdAt`,
             data,
             setMessage,
             () => {
-              setShowConsumptionForm(false)
+              setShowOperationForm(false)
               resetForm()
             }
           )
@@ -174,7 +163,7 @@ const ConsumptionForm: React.FC = () => {
   return (
     <>
       <div
-        onClick={() => setShowConsumptionForm(false)}
+        onClick={() => setShowOperationForm(false)}
         className="fixed h-full w-full z-50 left-0 top-0 bg-black/50 items-center justify-center flex"
       >
         <div
@@ -186,41 +175,54 @@ const ConsumptionForm: React.FC = () => {
           <div className="grid sm:grid-cols-2 gap-2">
             <div className="flex flex-col">
               <label className="label" htmlFor="">
-                Birds
+                Operation
               </label>
               <input
                 className="form-input"
-                name="birds"
-                value={consumptionForm.birds}
+                name="operation"
+                value={operationForm.operation}
                 onChange={handleInputChange}
-                type="number"
-                placeholder="Enter number of birds"
+                type="text"
+                placeholder="Enter operation"
               />
             </div>
             <div className="flex flex-col">
               <label className="label" htmlFor="">
-                Bird Age
+                Live Stock
               </label>
               <input
                 className="form-input"
-                name="birdAge"
-                value={consumptionForm.birdAge}
+                name="livestock"
+                value={operationForm.livestock}
                 onChange={handleInputChange}
                 type="text"
-                placeholder="Enter bird age"
+                placeholder="Enter number of livestock"
               />
             </div>
             <div className="flex flex-col">
               <label className="label" htmlFor="">
-                Bird Class
+                Livestock Age
               </label>
               <input
                 className="form-input"
-                name="birdClass"
-                value={consumptionForm.birdClass}
+                name="livestockAge"
+                value={operationForm.livestockAge}
                 onChange={handleInputChange}
                 type="text"
-                placeholder="Enter bird class"
+                placeholder="Enter livestock age"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="label" htmlFor="">
+                Livestock Number
+              </label>
+              <input
+                className="form-input"
+                name="livestockNumber"
+                value={operationForm.livestockNumber}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Enter livestock number"
               />
             </div>
             <div className="flex flex-col">
@@ -230,7 +232,7 @@ const ConsumptionForm: React.FC = () => {
               <input
                 className="form-input"
                 name="weight"
-                value={consumptionForm.weight}
+                value={operationForm.weight}
                 onChange={handleInputChange}
                 type="text"
                 placeholder="Enter weight"
@@ -238,52 +240,29 @@ const ConsumptionForm: React.FC = () => {
             </div>
             <div className="flex flex-col">
               <label className="label" htmlFor="">
-                Feed
-              </label>
-              <div className="relative">
-                <div
-                  onClick={() => toggleFeed((e) => !e)}
-                  className="form-input cursor-pointer"
-                >
-                  {consumptionForm.feed ? consumptionForm.feed : 'Select Feed'}
-                  <i
-                    className={`bi bi-caret-down-fill ml-auto ${isFeed ? 'active' : ''
-                      }`}
-                  ></i>
-                </div>
-                {isFeed && (
-                  <div className="dropdownList">
-                    {buyingProducts.map((item, index) => (
-                      <div
-                        onClick={() => selectFeed(item)}
-                        key={index}
-                        className="p-3 cursor-pointer border-b border-b-[var(--border)]"
-                      >
-                        {item.name}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label className="label" htmlFor="">
-                Consumption
+                Medication
               </label>
               <input
                 className="form-input"
-                name="consumption"
-                value={consumptionForm.consumption}
+                name="medication"
+                value={operationForm.medication}
                 onChange={handleInputChange}
-                type="number"
-                placeholder="Enter consumption"
+                type="text"
+                placeholder="Enter medication"
               />
             </div>
             <div className="flex flex-col">
               <label className="label" htmlFor="">
-                Staff
+                Quantity
               </label>
-              <div className="form-input">{user?.fullName}</div>
+              <input
+                className="form-input"
+                name="quantity"
+                value={operationForm.quantity}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Enter quantity"
+              />
             </div>
           </div>
           <div className="flex flex-col">
@@ -294,7 +273,7 @@ const ConsumptionForm: React.FC = () => {
               placeholder="Write the remark/observation of the consumption"
               className="form-input"
               name="remark"
-              value={consumptionForm.remark}
+              value={operationForm.remark}
               onChange={handleInputChange}
             ></textarea>
           </div>
@@ -313,7 +292,7 @@ const ConsumptionForm: React.FC = () => {
 
                 <button
                   className="custom_btn danger ml-auto"
-                  onClick={() => setShowConsumptionForm(false)}
+                  onClick={() => setShowOperationForm(false)}
                 >
                   Close
                 </button>
@@ -326,4 +305,4 @@ const ConsumptionForm: React.FC = () => {
   )
 }
 
-export default ConsumptionForm
+export default OperationOverlay

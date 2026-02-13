@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { appendForm } from '@/lib/helpers'
 import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
-import PictureDisplay from '@/components/PictureDisplay'
 import { validateInputs } from '@/lib/validation'
 import { AuthStore } from '@/src/zustand/user/AuthStore'
 import StockingStore from '@/src/zustand/Stocking'
@@ -30,10 +29,10 @@ const StockingForm: React.FC = () => {
 
   const handleFileChange =
     (key: keyof typeof stockingFrom) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files ? e.target.files[0] : null
-      setStockingForm(key, file)
-    }
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null
+        setStockingForm(key, file)
+      }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -139,14 +138,14 @@ const StockingForm: React.FC = () => {
       () =>
         stockingFrom._id
           ? updateStocking(
-              `${url}/${stockingFrom._id}/?ordering=-createdAt`,
-              data,
-              setMessage,
-              () => setShowStocking(false)
-            )
+            `${url}/${stockingFrom._id}/?ordering=-createdAt`,
+            data,
+            setMessage,
+            () => setShowStocking(false)
+          )
           : postStocking(`${url}/?ordering=-createdAt`, data, setMessage, () =>
-              setShowStocking(false)
-            )
+            setShowStocking(false)
+          )
     )
   }
 
@@ -154,23 +153,15 @@ const StockingForm: React.FC = () => {
     <>
       <div
         onClick={() => setShowStocking(false)}
-        className="fixed h-full w-full z-20 left-0 top-0 bg-black/50 items-center justify-center flex"
+        className="fixed h-full w-full z-50 left-0 top-0 bg-black/50 items-center justify-center flex"
       >
         <div
           onClick={(e) => {
             e.stopPropagation()
           }}
-          className="card_body sharp w-full max-w-[600px]"
+          className="card_body sharp w-full max-w-[600px] max-h-[100vh] overflow-auto"
         >
-          <div className="flex w-full justify-center">
-            <div className="relative my-5 w-full max-w-[200px] h-[150px] rounded-xl  overflow-hidden">
-              {stockingFrom?.picture ? (
-                <PictureDisplay source={String(stockingFrom.picture)} />
-              ) : (
-                <div className="bg-[var(--secondary)] h-full w-full" />
-              )}
-            </div>
-          </div>
+
           <div className="custom_sm_title text-center">{stockingFrom.name}</div>
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col">
@@ -240,14 +231,14 @@ const StockingForm: React.FC = () => {
                   className="custom_btn mr-3"
                   onClick={() => handleSubmit(true)}
                 >
-                  Added
+                  Produced
                 </button>
 
                 <button
                   className="custom_btn danger"
                   onClick={() => handleSubmit(false)}
                 >
-                  Removed
+                  Damaged
                 </button>
               </>
             )}

@@ -52,14 +52,14 @@ const CreateProduct: React.FC = () => {
 
   const handleFileChange =
     (key: keyof typeof productForm) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files ? e.target.files[0] : null
-      setForm(key, file)
-      if (key === 'picture' && file) {
-        const localUrl = URL.createObjectURL(file)
-        setPreview(localUrl)
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null
+        setForm(key, file)
+        if (key === 'picture' && file) {
+          const localUrl = URL.createObjectURL(file)
+          setPreview(localUrl)
+        }
       }
-    }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -99,6 +99,12 @@ const CreateProduct: React.FC = () => {
         value: productForm.purchaseUnit,
         rules: { blank: true, maxLength: 100 },
         field: 'Purchase Unit field',
+      },
+      {
+        name: 'isBuyable',
+        value: false,
+        rules: { maxLength: 100 },
+        field: 'Buyable field',
       },
       {
         name: 'seoTitle',
@@ -230,7 +236,7 @@ const CreateProduct: React.FC = () => {
 
           <div className="flex flex-col">
             <label className="label" htmlFor="">
-              Purchase Unit
+              Purchase Unit Name
             </label>
             <input
               className="form-input"

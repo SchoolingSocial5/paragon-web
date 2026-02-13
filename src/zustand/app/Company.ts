@@ -59,6 +59,11 @@ interface CompanyState {
     updatedItem: FormData,
     setMessage: (message: string, isError: boolean) => void
   ) => Promise<void>
+  resetAll: (
+    url: string,
+    updatedItem: Record<string, unknown>,
+    setMessage: (message: string, isError: boolean) => void
+  ) => Promise<void>
   getCompany: (
     url: string,
     setMessage: (message: string, isError: boolean) => void
@@ -105,6 +110,26 @@ const CompanyStore = create<CompanyState>((set) => ({
       if (data.company) {
         set({ companyForm: data.company, loading: false })
       }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      set({ loading: false })
+    }
+  },
+
+  resetAll: async (
+    url,
+    updatedItem,
+    setMessage
+  ) => {
+    try {
+      set({ loading: true })
+      await apiRequest<FetchResponse>(url, {
+        method: 'PATCH',
+        body: updatedItem,
+        setMessage,
+      })
+
     } catch (error) {
       console.log(error)
     } finally {

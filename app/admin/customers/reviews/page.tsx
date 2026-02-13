@@ -5,7 +5,7 @@ import { useParams, usePathname } from 'next/navigation'
 import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
 import LinkedPagination from '@/components/Admin/LinkedPagination'
 import { formatDateToDDMMYY, formatTimeTo12Hour } from '@/lib/helpers'
-import RatingStore from '@/src/zustand/Rating'
+import RatingStore, { Rating } from '@/src/zustand/Rating'
 import { Star } from 'lucide-react'
 
 const Ratings: React.FC = () => {
@@ -18,72 +18,45 @@ const Ratings: React.FC = () => {
     loading,
     count,
     selectedRatings,
-    massDelete,
-    deleteRating,
+    massDelete, updateRating,
     toggleAllSelected,
     toggleChecked,
     reshuffleResults,
-    toggleActive,
     getRatings,
   } = RatingStore()
   const pathname = usePathname()
   const { page } = useParams()
-  const { setAlert } = AlartStore()
   const url = '/reviews/'
+  const params = `?page_size=${page_size}&page=${page ? page : 1
+    }&ordering=${sort}`
 
   useEffect(() => {
     reshuffleResults()
   }, [pathname])
 
   useEffect(() => {
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
     getRatings(`${url}${params}`, setMessage)
   }, [page])
 
-  const deleteProductStock = async (id: string, index: number) => {
-    toggleActive(index)
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
-    await deleteRating(`${url}/${id}/${params}`, setMessage)
-  }
 
-  const startDelete = (id: string, index: number) => {
-    setAlert(
-      'Warning',
-      'Are you sure you want to delete this Product Stocking?',
-      true,
-      () => deleteProductStock(id, index)
-    )
-  }
-
-  // const handlesearchFaq = _debounce(
-  //   async (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const value = e.target.value
-  //     if (value.trim().length > 0) {
-  //       searchFaq(
-  //         `${url}/search?author=${value}&content=${value}&title=${value}&subtitle=${value}&page_size=${page_size}`
-  //       )
-  //     } else {
-  //       FaqStore.setState({ searchedFaqs: [] })
-  //     }
-  //   },
-  //   1000
-  // )
-
-  const deleteFaqs = async () => {
+  const deleteReviews = async () => {
     if (selectedRatings.length === 0) {
       setMessage('Please select at least one item to delete', false)
       return
     }
     const ids = selectedRatings.map((item) => item._id)
-    await massDelete(`${url}/mass-delete`, { ids: ids }, setMessage)
+    await massDelete(`${url}/mass-delete/${params}`, { ids: ids }, setMessage)
+  }
+
+  const toggleReview = async (el: Rating) => {
+    await updateRating(`${url}${el.username}`, { status: !el.status }, setMessage)
   }
 
   return (
     <>
+      <div className="text-lg text-[var(--text-secondary)]">
+        Table of Reviews
+      </div>
       <div className="overflow-auto mb-5">
         {ratings.length > 0 ? (
           <table>
@@ -95,6 +68,7 @@ const Ratings: React.FC = () => {
                 <th>Rating</th>
                 <th>Review</th>
                 <th>Time</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -116,28 +90,8 @@ const Ratings: React.FC = () => {
                       {(page ? Number(page) - 1 : 1 - 1) * page_size +
                         index +
                         1}
-                      <i
-                        onClick={() => toggleActive(index)}
-                        className="bi bi-three-dots-vertical text-lg cursor-pointer"
-                      ></i>
-                    </div>
-                    {item.isActive && (
-                      <div className="card_list">
-                        <span
-                          onClick={() => toggleActive(index)}
-                          className="more_close "
-                        >
-                          X
-                        </span>
 
-                        <div
-                          className="card_list_item"
-                          onClick={() => startDelete(item._id, index)}
-                        >
-                          Delete Stock
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </td>
                   <td>
                     <div className="relative w-[50px] h-[50px] overflow-hidden rounded-full">
@@ -181,13 +135,26 @@ const Ratings: React.FC = () => {
                     {formatTimeTo12Hour(item.createdAt)} <br />
                     {formatDateToDDMMYY(item.createdAt)}
                   </td>
+                  <td>
+                    <div className="flex">
+                      {item.status ? (
+                        <div onClick={() => toggleReview(item)} className="px-3 py-1 cursor-pointer bg-[var(--success)] text-white">
+                          Approved
+                        </div>
+                      ) : (
+                        <div onClick={() => toggleReview(item)} className="px-3 py-1 cursor-pointer bg-[var(--secondary)] text-[var(--customRedColor)]">
+                          Pending
+                        </div>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
           <div className="relative flex justify-center">
-            <div className="not_found_text">No Product Stockings Found</div>
+            <div className="not_found_text">No Reviews Found</div>
             <Image
               className="max-w-[300px]"
               alt={`no record`}
@@ -210,12 +177,11 @@ const Ratings: React.FC = () => {
           <div className="grid mr-auto grid-cols-4 gap-2 w-[160px]">
             <div onClick={toggleAllSelected} className="tableActions">
               <i
-                className={`bi bi-check2-all ${
-                  isAllChecked ? 'text-[var(--custom)]' : ''
-                }`}
+                className={`bi bi-check2-all ${isAllChecked ? 'text-[var(--custom)]' : ''
+                  }`}
               ></i>
             </div>
-            <div onClick={deleteFaqs} className="tableActions">
+            <div onClick={deleteReviews} className="tableActions">
               <i className="bi bi-trash"></i>
             </div>
             {/* <div onClick={() => showForm(true)} className="tableActions">
@@ -229,7 +195,7 @@ const Ratings: React.FC = () => {
       </div>
 
       <div className="card_body sharp">
-        <LinkedPagination url="/admin/pages/faq" count={count} page_size={20} />
+        <LinkedPagination url="/admin/customers/reviews" count={count} page_size={20} />
       </div>
     </>
   )

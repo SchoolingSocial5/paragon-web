@@ -37,10 +37,10 @@ const ServiceForm: React.FC = () => {
 
   const handleFileChange =
     (key: keyof typeof serviceForm) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files ? e.target.files[0] : null
-      setForm(key, file)
-    }
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null
+        setForm(key, file)
+      }
 
   const handleSubmit = async () => {
     if (!user) {
@@ -140,18 +140,18 @@ const ServiceForm: React.FC = () => {
       () =>
         serviceForm._id
           ? updateService(
-              `/services/${serviceForm._id}/?ordering=-createdAt`,
-              data,
-              setMessage,
-              () => {
-                setShowServiceForm(false)
-                resetForm()
-              }
-            )
-          : postService(`${url}?ordering=-createdAt`, data, setMessage, () => {
+            `/services/${serviceForm._id}/?ordering=-createdAt`,
+            data,
+            setMessage,
+            () => {
               setShowServiceForm(false)
               resetForm()
-            })
+            }
+          )
+          : postService(`${url}?ordering=-createdAt`, data, setMessage, () => {
+            setShowServiceForm(false)
+            resetForm()
+          })
     )
   }
 
@@ -159,13 +159,13 @@ const ServiceForm: React.FC = () => {
     <>
       <div
         onClick={() => setShowServiceForm(false)}
-        className="fixed h-full w-full z-30 left-0 top-0 bg-black/50 items-center justify-center flex"
+        className="fixed h-full w-full z-50 left-0 top-0 bg-black/50 items-center justify-center flex"
       >
         <div
           onClick={(e) => {
             e.stopPropagation()
           }}
-          className="card_body sharp w-full max-w-[800px]"
+          className="card_body sharp w-full max-w-[800px] max-h-[100vh] overflow-auto"
         >
           <div className="grid sm:grid-cols-2 gap-2">
             <div className="flex flex-col">

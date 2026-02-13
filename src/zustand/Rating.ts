@@ -17,6 +17,7 @@ export interface Rating {
   picture: string
   rating: number
   review: string
+  status: boolean
   createdAt: Date | null | number
   isChecked?: boolean
   isActive?: boolean
@@ -30,6 +31,7 @@ export const RatingEmpty = {
   rating: 5,
   review: '',
   createdAt: 0,
+  status: false
 }
 
 interface RatingState {
@@ -191,7 +193,6 @@ const RatingStore = create<RatingState>((set) => ({
       setLoading: RatingStore.getState().setLoading,
     })
     const data = response?.data
-    console.log(data)
     if (data) {
       RatingStore.getState().setProcessedResults(data)
     }

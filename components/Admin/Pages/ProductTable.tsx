@@ -9,8 +9,8 @@ import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
 import { Edit, Package, Trash } from 'lucide-react'
 import LinkedPagination from '@/components/Admin/LinkedPagination'
 import ProductStore, { Product } from '@/src/zustand/Product'
-import StockingForm from '@/components/Admin/Pages/StockingForm'
 import StockingStore from '@/src/zustand/Stocking'
+import StockingForm from '../PopUps/StockingForm'
 
 const ProductTable: React.FC = () => {
   const {
@@ -39,6 +39,8 @@ const ProductTable: React.FC = () => {
   const { showStocking, setShowStocking } = StockingStore()
   const inputRef = useRef<HTMLInputElement>(null)
   const url = '/products'
+  const params = `?page_size=${page_size}&page=${page ? page : 1
+    }&ordering=${sort}`
 
   useEffect(() => {
     reshuffleResults()
@@ -46,16 +48,12 @@ const ProductTable: React.FC = () => {
 
   useEffect(() => {
     if (products.length === 0) {
-      const params = `?page_size=${page_size}&page=${page ? page : 1
-        }&ordering=${sort}`
       getProducts(`${url}${params}`, setMessage)
     }
   }, [page])
 
   const deleteProduct = async (id: string, index: number) => {
     toggleActive(index)
-    const params = `?page_size=${page_size}&page=${page ? page : 1
-      }&ordering=${sort}`
     await deleteItem(`${url}/${id}/${params}`, setMessage, setLoading)
   }
 
@@ -131,8 +129,8 @@ const ProductTable: React.FC = () => {
           {searchedProducts.length > 0 && (
             <div
               className={`dropdownList ${searchedProducts.length > 0
-                  ? 'overflow-auto'
-                  : 'overflow-hidden h-0'
+                ? 'overflow-auto'
+                : 'overflow-hidden h-0'
                 }`}
             >
               {searchedProducts.map((item, index) => (
@@ -259,6 +257,7 @@ const ProductTable: React.FC = () => {
                   }`}
               ></i>
             </div>
+
             <div onClick={DeleteItems} className="tableActions">
               <i className="bi bi-trash"></i>
             </div>
