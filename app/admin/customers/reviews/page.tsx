@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useParams, usePathname } from 'next/navigation'
-import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
+import { MessageStore } from '@/src/zustand/notification/Message'
 import LinkedPagination from '@/components/Admin/LinkedPagination'
 import { formatDateToDDMMYY, formatTimeTo12Hour } from '@/lib/helpers'
 import RatingStore, { Rating } from '@/src/zustand/Rating'

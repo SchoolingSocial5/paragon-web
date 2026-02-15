@@ -1,17 +1,13 @@
 'use client'
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import apiRequest, { ApiResponseInterface } from '@/lib/axios'
 import { ValidationResult } from '@/lib/validateInputs'
-import { UserStore } from '@/src/zustand/user/User'
-import { MessageStore } from '@/src/zustand/notification/Message'
 import axios from 'axios'
 import Spinner from '@/components/Spinner'
 
 const PassCode: React.FC = () => {
     const router = useRouter()
-    const { setMessage } = MessageStore()
     const [error, setError] = useState<ValidationResult | null>(null)
     const [code, setCode] = useState(['', '', '', '', '', ''])
     const [loading, setLoading] = useState(false)

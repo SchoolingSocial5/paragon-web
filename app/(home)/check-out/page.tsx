@@ -206,7 +206,7 @@ function CheckOut() {
             </div>
             <div className="overflow-auto flex flex-col items-start max-h-[80vh]">
               <div className="flex items-center mb-3">
-                <span className="w-[150px]">Customer's Name:</span>{' '}
+                <span className="w-[150px]">{`Customer's Name:`}</span>{' '}
                 <span>{user?.fullName}</span>
               </div>
               <div className="mb-3 font-bold">Payment Details</div>

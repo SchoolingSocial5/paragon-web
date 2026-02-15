@@ -17,7 +17,7 @@ const Users: React.FC = () => {
     loading,
     count,
     selectedUsers,
-    showProfileSheet, showStaffForm,
+    showProfileSheet,
     setShowProfileSheet,
     massDeleteUsers,
     makeUserStaff,

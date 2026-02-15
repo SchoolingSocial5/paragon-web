@@ -1,19 +1,16 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ValidationResult } from '@/lib/validateInputs'
 import apiRequest, { ApiResponseInterface } from '@/lib/axios'
-import { AuthStore } from '@/src/zustand/user/AuthStore'
-import Spinner from '@/components/LoadingAnimations/Spinner'
+import Spinner from '@/components/Spinner'
 
 export default function ForgottenPassword() {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<ValidationResult | null>(null)
-  const [generalError, setGeneralError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -111,9 +108,7 @@ export default function ForgottenPassword() {
             Submit Email
           </button>
         )}
-        {generalError && (
-          <div className="text-red-500 text-sm">{generalError}</div>
-        )}
+
         <Link
           href={`/forgotten-password`}
           className="mt-1 text-center text-sm text-[var(--custom-text-color)] block hover:underline"
