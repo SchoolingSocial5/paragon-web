@@ -12,12 +12,12 @@ const Users: React.FC = () => {
   const [sort] = useState('-staffRanking')
   const { setMessage } = MessageStore()
   const {
-    users,
+    staffs,
     isAllChecked,
     loading,
     count,
     selectedUsers,
-    showProfileSheet,
+    showProfileSheet, showStaffForm,
     setShowProfileSheet,
     massDeleteUsers,
     makeUserStaff,
@@ -26,29 +26,27 @@ const Users: React.FC = () => {
     toggleChecked,
     reshuffleResults,
     toggleActive,
-    getUsers,
+    getStaffs,
   } = UserStore()
   const pathname = usePathname()
   const { page } = useParams()
   const { setAlert } = AlartStore()
   const url = '/users'
-  const params = `?page_size=${page_size}&page=${
-    page ? page : 1
-  }&ordering=${sort}&status=Staff`
+  const params = `?page_size=${page_size}&page=${page ? page : 1
+    }&ordering=${sort}&status=Staff`
 
   useEffect(() => {
     reshuffleResults()
   }, [pathname])
 
   useEffect(() => {
-    getUsers(`${url}${params}`, setMessage)
+    getStaffs(`${url}${params}`, setMessage)
   }, [page])
 
   const deleteUserProfile = async (id: string, index: number) => {
     toggleActive(index)
-    const params = `?page_size=${page_size}&page=${
-      page ? page : 1
-    }&ordering=${sort}`
+    const params = `?page_size=${page_size}&page=${page ? page : 1
+      }&ordering=${sort}`
     await deleteUser(`${url}/${id}/${params}`, setMessage)
   }
 
@@ -100,7 +98,7 @@ const Users: React.FC = () => {
   return (
     <>
       <div className="overflow-auto mb-5">
-        {users.length > 0 ? (
+        {staffs.length > 0 ? (
           <table>
             <thead>
               <tr className="bg-[var(--primary)] p-2">
@@ -113,12 +111,11 @@ const Users: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((item, index) => (
+              {staffs.map((item, index) => (
                 <tr
                   key={index}
-                  className={`${
-                    item.isSuspended ? 'text-[var(--customRedColor)]' : ''
-                  } ${index % 2 === 1 ? 'bg-[var(--primary)]' : ''}`}
+                  className={`${item.isSuspended ? 'text-[var(--customRedColor)]' : ''
+                    } ${index % 2 === 1 ? 'bg-[var(--primary)]' : ''}`}
                 >
                   <td>
                     <div className="flex items-center">
@@ -202,7 +199,7 @@ const Users: React.FC = () => {
           </table>
         ) : (
           <div className="relative flex justify-center">
-            <div className="not_found_text">No Users Found</div>
+            <div className="not_found_text">No Staff Found</div>
             <Image
               className="max-w-[300px]"
               alt={`no record`}
@@ -225,9 +222,8 @@ const Users: React.FC = () => {
           <div className="grid mr-auto grid-cols-4 gap-2 w-[160px]">
             <div onClick={toggleAllSelected} className="tableActions">
               <i
-                className={`bi bi-check2-all ${
-                  isAllChecked ? 'text-[var(--custom)]' : ''
-                }`}
+                className={`bi bi-check2-all ${isAllChecked ? 'text-[var(--custom)]' : ''
+                  }`}
               ></i>
             </div>
             <div onClick={deleteFaqs} className="tableActions">

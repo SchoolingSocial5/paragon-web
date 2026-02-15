@@ -116,6 +116,7 @@ const CreateCompany: React.FC = () => {
 
   return (
     <>
+
       <div className="card_body sharp h-full">
         <div className="custom_sm_title">Update Company</div>
 

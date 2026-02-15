@@ -10,9 +10,8 @@ import { UserStore } from '@/src/zustand/user/User'
 
 const StaffSheet: React.FC = () => {
   const {
-    reshuffleResults,
     userForm,
-    loading,
+    loading, reshuffleResults,
     updateStaff,
     setForm,
     setShowProfileSheet,
@@ -48,17 +47,28 @@ const StaffSheet: React.FC = () => {
         field: 'Username field',
       },
       {
+        name: 'salary',
+        value: userForm.salary,
+        rules: { blank: true, minLength: 1, maxLength: 100 },
+        field: 'Salary field',
+      },
+      {
         name: 'staffRanking',
         value: userForm.staffRanking,
         rules: { blank: true, minLength: 1, maxLength: 100 },
         field: 'Amount field',
       },
-
       {
         name: 'staffPositions',
         value: userForm.staffPositions,
-        rules: { blank: true, maxLength: 100 },
-        field: 'Unit field',
+        rules: { blank: true, maxLength: 1000 },
+        field: 'Position field',
+      },
+      {
+        name: 'roles',
+        value: userForm.roles,
+        rules: { blank: true, maxLength: 1000 },
+        field: 'Role field',
       },
     ]
     const { messages } = validateInputs(inputsToValidate)
@@ -149,7 +159,7 @@ const StaffSheet: React.FC = () => {
             </div>
             <div className="flex flex-col">
               <label className="label" htmlFor="">
-                Positions
+                Position
               </label>
               <input
                 className="form-input"
@@ -157,7 +167,20 @@ const StaffSheet: React.FC = () => {
                 value={userForm.staffPositions}
                 onChange={handleInputChange}
                 type="text"
-                placeholder="Enter positions"
+                placeholder="Enter position"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="label" htmlFor="">
+                Roles
+              </label>
+              <input
+                className="form-input"
+                name="roles"
+                value={userForm.roles}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Enter roles"
               />
             </div>
           </div>

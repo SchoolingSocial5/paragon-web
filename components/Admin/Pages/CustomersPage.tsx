@@ -153,10 +153,11 @@ const CustomersPage: React.FC = () => {
 
     const makeUser = async (id: string) => {
         await makeUserStaff(
-            `${url}/${id}/${params}`,
+            `${url}/make-staff/${params}`,
             {
                 status: 'Staff',
                 staffRanking: 0,
+                id
             },
             setMessage
         )

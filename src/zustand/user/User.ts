@@ -24,11 +24,14 @@ interface FetchUserResponse {
 
 interface UserState {
   userForm: User
+  staffForm: User
   users: User[]
+  staffs: User[]
   count: number
   isAllChecked: boolean
   loading: boolean
   showUserForm: boolean
+  showStaffForm: boolean
   autLoading: boolean
   page: number
   page_size: number
@@ -45,6 +48,10 @@ interface UserState {
     setMessage: (message: string, isError: boolean) => void
   ) => Promise<void>
   getUsers: (
+    url: string,
+    setMessage: (message: string, isError: boolean) => void
+  ) => Promise<void>
+  getStaffs: (
     url: string,
     setMessage: (message: string, isError: boolean) => void
   ) => Promise<void>
@@ -108,6 +115,7 @@ export const UserEmpty = {
   isFirstTime: false,
   phone: '',
   address: '',
+  roles: '',
   picture: '',
   staffPositions: '',
   salary: 0,
@@ -122,11 +130,14 @@ export const UserEmpty = {
 
 export const UserStore = create<UserState>((set) => ({
   userForm: UserEmpty,
+  staffForm: UserEmpty,
   users: [],
+  staffs: [],
   count: 0,
   isAllChecked: false,
   loading: false,
   showUserForm: false,
+  showStaffForm: false,
   autLoading: false,
   page: 1,
   page_size: 20,
@@ -183,6 +194,22 @@ export const UserStore = create<UserState>((set) => ({
       console.log(error)
     }
   },
+
+  getStaffs: async (
+    url,
+    setMessage
+  ) => {
+    try {
+      const response = await apiRequest<FetchUserResponse>(url, { setMessage })
+      const data = response?.data
+      if (data) {
+        set({ staffs: data.results })
+      }
+    } catch (error: unknown) {
+      console.log(error)
+    }
+  },
+
 
   makeUserStaff: async (url, selectedUsers, setMessage) => {
     try {
@@ -403,7 +430,7 @@ export const UserStore = create<UserState>((set) => ({
       })
       const data = response.data
       if (data) {
-        UserStore.getState().setProcessedResults(data.result)
+        set({ staffs: data.result.results })
       }
       if (redirect) redirect()
     } catch (error) {
@@ -449,6 +476,7 @@ export interface User {
   fullName: string
   email: string
   address: string
+  roles: string
   isSuspended: boolean
   isFirstTime: boolean
   isTwoFactor: boolean
