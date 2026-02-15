@@ -10,6 +10,7 @@ const getSavedCart = () => {
     try {
       return saved ? JSON.parse(saved) : [];
     } catch (e) {
+      console.log(e)
       return []; // Safety if JSON is corrupted
     }
   }
@@ -191,7 +192,7 @@ const ProductStore = create<ProductState>((set) => ({
   count: 0,
   page_size: 0,
   totalAmount: getSavedCart().reduce(
-    (sum: any, item: any) => sum + item.cartUnits * (item.price || 0),
+    (sum: number, item: Product) => sum + item.cartUnits * (item.price || 0),
     0
   ),
   cart: CartEmpty,
@@ -634,7 +635,6 @@ const ProductStore = create<ProductState>((set) => ({
       setMessage,
       setLoading: ProductStore.getState().setLoading,
     })
-    console.log(response)
     if (response?.data) {
       ProductStore.getState().setProcessedResults(response.data)
     }

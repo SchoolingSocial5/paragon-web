@@ -2,35 +2,29 @@
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useParams, usePathname } from 'next/navigation'
-import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
+import { MessageStore } from '@/src/zustand/notification/Message'
 import LinkedPagination from '@/components/Admin/LinkedPagination'
 import {
     formatDateToDDMMYY,
-    formatMoney,
     formatTimeTo12Hour,
 } from '@/lib/helpers'
 import StatDuration from '@/components/Admin/StatDuration'
 import OperationOverlay from '../PopUps/OperationOverlay'
-import OperationStore, { Operation } from '@/src/zustand/Operation'
+import OperationStore from '@/src/zustand/Operation'
 
 const OperationsTable: React.FC = () => {
     const [page_size] = useState(20)
     const [sort] = useState('-createdAt')
     const { setMessage } = MessageStore()
-    const { setAlert } = AlartStore()
     const {
         loading,
         count,
         operations,
         isAllChecked,
         showOperationForm,
-        updateOperation,
         setShowOperationForm,
-        deleteItem,
         getOperations,
-        toggleActive,
         toggleAllSelected,
-        reshuffleResults,
     } = OperationStore()
     const pathname = usePathname()
     const { page, username } = useParams()
@@ -56,43 +50,6 @@ const OperationsTable: React.FC = () => {
             getOperations(`${url}${params}`, setMessage)
         }
     }, [page, pathname, username, toDate, fromDate])
-
-    const startEdit = (service: Operation) => {
-        OperationStore.setState({ operationForm: service })
-        displayServiceForm()
-    }
-
-    const startDelete = (id: string) => {
-        setAlert(
-            'Warning',
-            'Are you sure you want to delete this Service?',
-            true,
-            () => deleteItem(`/operations/${id}`, setMessage)
-        )
-    }
-
-    const displayServiceForm = () => {
-        setShowOperationForm(!showOperationForm)
-        reshuffleResults()
-    }
-
-    const startDelivery = (id: string, status: boolean) => {
-        if (status) {
-            updateOperation(
-                `/operations/${id}?dateFrom=${fromDate}&dateTo=${toDate}&page_size=${page_size}&page=${page ? page : 1
-                }&ordering=${sort}`,
-                { startedAt: new Date() },
-                setMessage
-            )
-        } else {
-            updateOperation(
-                `/operations/${id}?dateFrom=${fromDate}&dateTo=${toDate}&page_size=${page_size}&page=${page ? page : 1
-                }&ordering=${sort}`,
-                { endedAt: new Date() },
-                setMessage
-            )
-        }
-    }
 
     return (
         <>

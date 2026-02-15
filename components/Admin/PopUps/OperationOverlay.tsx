@@ -1,12 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { appendForm } from '@/lib/helpers'
 import { AlartStore, MessageStore } from '@/src/zustand/notification/Message'
 import { validateInputs } from '@/lib/validation'
 import { AuthStore } from '@/src/zustand/user/AuthStore'
-import ProductStore from '@/src/zustand/Product'
-import OperationStore, { Operation } from '@/src/zustand/Operation'
+import OperationStore from '@/src/zustand/Operation'
 
 const OperationOverlay: React.FC = () => {
   const {
@@ -19,26 +18,16 @@ const OperationOverlay: React.FC = () => {
     setShowOperationForm,
     reshuffleResults,
   } = OperationStore()
-  const { buyingProducts } = ProductStore()
   const { setMessage } = MessageStore()
   const pathname = usePathname()
   const { setAlert } = AlartStore()
   const { user } = AuthStore()
-  const [isFeed, toggleFeed] = useState(false)
   const url = `/consumptions`
 
   useEffect(() => {
     reshuffleResults()
   }, [pathname])
 
-  const selectFeed = (feed: Operation) => {
-    OperationStore.setState((prev) => {
-      return {
-        operationForm: feed,
-      }
-    })
-    toggleFeed(false)
-  }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

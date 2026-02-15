@@ -7,7 +7,7 @@ import { MessageStore } from '@/src/zustand/notification/Message'
 import EmailStore from '@/src/zustand/notification/Email'
 import { AuthStore } from '@/src/zustand/user/AuthStore'
 import QuillEditor from '@/components/Admin/QuillEditor'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, } from 'next/navigation'
 
 const EmailForm: React.FC = () => {
     const url = '/emails/'
@@ -24,7 +24,6 @@ const EmailForm: React.FC = () => {
         postItem,
     } = EmailStore()
     const { user } = AuthStore()
-    const router = useRouter()
 
     useEffect(() => {
         const initialize = async () => {
