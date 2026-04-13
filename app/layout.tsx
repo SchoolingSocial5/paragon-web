@@ -47,6 +47,13 @@ export default function RootLayout({
     setIsMounted(true)
     getCompany('/company', setMessage)
 
+    // Initialize Offline Sync Service
+    const initSync = async () => {
+      const { syncService } = await import('@/lib/syncService');
+      syncService.init();
+    };
+    initSync();
+
     if (navigator.onLine) {
       setOnline('', true)
     } else {
@@ -87,7 +94,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        <title>SBG Egg Farms Limited</title>
+        <title>Paragon Farms Limited</title>
 
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -95,36 +102,36 @@ export default function RootLayout({
 
         <meta
           name="description"
-          content="SBG Egg Farm is your trusted source for premium poultry products — from fresh eggs to healthy broilers. We’re dedicated to sustainable farming and quality you can taste."
+          content="Paragon Farms Limited is your trusted source for premium poultry products — from fresh eggs to healthy broilers. We’re dedicated to sustainable farming and quality you can taste."
         />
 
         <meta
           property="og:title"
-          content="SBG Egg Farm — Fresh, Healthy Poultry You Can Trust"
+          content="Paragon Farms Limited — Fresh, Healthy Poultry You Can Trust"
         />
         <meta
           property="og:description"
-          content="Experience excellence in poultry farming with SBG Egg Farm. We raise high-quality broilers and layers with care, ensuring freshness, nutrition, and sustainability."
+          content="Experience excellence in poultry farming with Paragon Farms Limited. We raise high-quality broilers and layers with care, ensuring freshness, nutrition, and sustainability."
         />
         <meta
           property="og:image"
-          content="https://sbgeggfarm.com/images/og-image.jpg"
+          content="https://paragonfarmsltd.com/images/og-image.jpg"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://sbgeggfarm.com" />
+        <meta property="og:url" content="https://paragonfarmsltd.com" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           property="twitter:title"
-          content="SBG Egg Farm — Quality Poultry Farming"
+          content="Paragon Farms Limited — Quality Poultry Farming"
         />
         <meta
           property="twitter:description"
-          content="SBG Egg Farm produces premium poultry and eggs through sustainable farming practices. Fresh. Healthy. Reliable."
+          content="Paragon Farms Limited produces premium poultry and eggs through sustainable farming practices. Fresh. Healthy. Reliable."
         />
         <meta
           property="twitter:image"
-          content="https://sbgeggfarm.com/images/og-image.jpg"
+          content="https://paragonfarmsltd.com/images/og-image.jpg"
         />
         <link rel="icon" href="/favicon.ico" />
 
