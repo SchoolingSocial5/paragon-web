@@ -32,6 +32,7 @@ const ProductionForm: React.FC = () => {
 
     const [productionValues, setProductionValues] = useState<Record<string, number>>({})
     const [currentColumns, setCurrentColumns] = useState<Column[]>([])
+    const [submitting, setSubmitting] = useState(false)
 
     useEffect(() => {
         getPens('/pens', setMessage)
@@ -200,10 +201,12 @@ const ProductionForm: React.FC = () => {
                 const action = isUpdate ? updateOperation : createOperation
                 const finalPayload = isUpdate ? allPayloads[0] : allPayloads
 
+                setSubmitting(true)
                 action(url, finalPayload, setMessage, () => {
                     setShowOperationForm(false)
                     resetForm()
                     clearPendingOperations()
+                    setSubmitting(false)
                 })
             }
         )
@@ -374,7 +377,7 @@ const ProductionForm: React.FC = () => {
                             <button
                                 className="custom_btn bg-green-600 !text-white"
                                 onClick={handleAddMore}
-                                disabled={currentColumns.length === 0 || (!operationForm.productId && editingPendingIndex === null)}
+                                disabled={currentColumns.length === 0 || (!operationForm.productId && editingPendingIndex === null) || submitting}
                                 type="button"
                             >
                                 <i className={`bi ${editingPendingIndex !== null ? 'bi-check-circle' : 'bi-plus-circle'} mr-1`}></i>
@@ -394,7 +397,7 @@ const ProductionForm: React.FC = () => {
                             <button
                                 className="custom_btn bg-[var(--customColor)]"
                                 onClick={handleSubmit}
-                                disabled={currentColumns.length === 0 && pendingOperations.length === 0}
+                                disabled={(currentColumns.length === 0 && pendingOperations.length === 0) || loading || submitting}
                             >
                                 {operationForm._id ? 'Update Record' : `Submit ${pendingOperations.length + (operationForm.productId && editingPendingIndex === null ? 1 : 0)} Records`}
                             </button>
