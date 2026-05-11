@@ -8,6 +8,7 @@ interface FetchResponse {
   results: Consumption[]
   data: Consumption
   result: FetchResponse
+  summary: { totalQuantity: number }
 }
 
 export interface Consumption {
@@ -56,12 +57,14 @@ interface ConsumptionState {
   page_size: number
   consumptions: Consumption[]
   latestConsumptions: Consumption[]
+  summary: { totalQuantity: number }
   loading: boolean
   showConsumptionForm: boolean
   isAllChecked: boolean
   consumptionForm: Consumption
   pendingConsumptions: Consumption[]
   editingPendingIndex: number | null
+  hasFetchedLatest: boolean
   setShowConsumptionForm: (status: boolean) => void
   resetForm: () => void
   setForm: (
@@ -121,6 +124,8 @@ const ConsumptionStore = create<ConsumptionState>((set) => ({
   consumptionForm: ConsumptionEmpty,
   pendingConsumptions: [],
   editingPendingIndex: null,
+  hasFetchedLatest: false,
+  summary: { totalQuantity: 0 },
   resetForm: () =>
     set({
       consumptionForm: ConsumptionEmpty,
@@ -159,7 +164,7 @@ const ConsumptionStore = create<ConsumptionState>((set) => ({
       editingPendingIndex: null,
     }),
 
-  setProcessedResults: ({ count, page_size, results }: FetchResponse) => {
+  setProcessedResults: ({ count, page_size, results, summary }: FetchResponse) => {
     if (results) {
       const updatedResults = results.map((item: Consumption) => ({
         ...item,
@@ -171,6 +176,7 @@ const ConsumptionStore = create<ConsumptionState>((set) => ({
         count,
         page_size,
         consumptions: updatedResults,
+        ...(summary && { summary })
       })
     }
   },
@@ -205,7 +211,7 @@ const ConsumptionStore = create<ConsumptionState>((set) => ({
       })
       const data = response?.data
       if (data) {
-        set({ latestConsumptions: data.results })
+        set({ latestConsumptions: data.results, hasFetchedLatest: true })
       }
     } catch (error: unknown) {
       console.log(error)
